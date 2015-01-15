@@ -9,8 +9,16 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
 public class Snake3DGame {
-        public static void main (String[] args) {
-                LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-                new LwjglApplication(new Snake3D(), config);
-        }
+
+    public static void main(String[] args) {
+        LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+
+        config.title = "Snake3D";
+        config.samples = 8;
+        config.width = 1280;
+        config.height = 720;
+        config.useGL30 = true;
+
+        LwjglApplication lwjglApplication = new LwjglApplication(new Snake3D(), config);
+    }
 }
