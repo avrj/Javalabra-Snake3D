@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import org.avrj.snake3d.Snake3D;
@@ -12,21 +13,58 @@ import org.avrj.snake3d.listeners.GameOverKeyListener;
 public class GameOverScene extends Snake3DScene {
 
     private boolean isDone = false;
-    private Stage stage;
-    private BitmapFont font;
-    private Label label;
-    private StringBuilder stringBuilder;
+    private final Stage stage;
+    private BitmapFont titleFont, playAgainGameFont, exitFont;
+    private final Label titleLabel, playAgainGameLabel, exitLabel;
+    private final StringBuilder stringBuilder;
 
     public GameOverScene(Snake3D snake3d) {
         super(snake3d);
 
         stage = new Stage();
-        font = new BitmapFont();
-        label = new Label(" ", new Label.LabelStyle(font, Color.WHITE));
-        stage.addActor(label);
+
+        loadFont();
+
+        titleLabel = new Label(" ", new Label.LabelStyle(titleFont, Color.WHITE));
+        titleLabel.setPosition(stage.getWidth() / 2 - 200, stage.getHeight() / 2);
+
+        playAgainGameLabel = new Label(" ", new Label.LabelStyle(playAgainGameFont, Color.WHITE));
+        playAgainGameLabel.setPosition(stage.getWidth() / 2 - 100, stage.getHeight() / 2 - 100);
+
+        exitLabel = new Label(" ", new Label.LabelStyle(exitFont, Color.WHITE));
+        exitLabel.setPosition(stage.getWidth() / 2 + 100, stage.getHeight() / 2 - 170);
+
+        stage.addActor(titleLabel);
+        stage.addActor(playAgainGameLabel);
+        stage.addActor(exitLabel);
+
         stringBuilder = new StringBuilder();
 
         snake3d.multiplexer.addProcessor(new GameOverKeyListener(snake3d));
+    }
+
+    @Override
+    public void dispose() {
+        titleFont.dispose();
+        playAgainGameFont.dispose();
+        exitFont.dispose();
+        stage.dispose();
+    }
+
+    public void loadFont() {
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("assets/fonts/AgentOrange.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+
+        parameter.size = 100;
+        titleFont = generator.generateFont(parameter);
+
+        parameter.size = 30;
+        playAgainGameFont = generator.generateFont(parameter);
+
+        parameter.size = 20;
+        exitFont = generator.generateFont(parameter);
+
+        generator.dispose();
     }
 
     @Override
@@ -41,13 +79,31 @@ public class GameOverScene extends Snake3DScene {
 
         stringBuilder.setLength(0);
         stringBuilder.append("Game over");
-        label.setText(stringBuilder);
+
+        titleLabel.setText(stringBuilder);
+
+        stringBuilder.setLength(0);
+        stringBuilder.append("Press [SPACE] to play again");
+
+        playAgainGameLabel.setText(stringBuilder);
+
+        stringBuilder.setLength(0);
+        stringBuilder.append("[ESC] to exit");
+
+        exitLabel.setText(stringBuilder);
+        stage.draw();
+
         stage.draw();
     }
 
     @Override
     public boolean isDone() {
         return isDone;
+    }
+
+    @Override
+    public void setDone() {
+        this.isDone = true;
     }
 
 }

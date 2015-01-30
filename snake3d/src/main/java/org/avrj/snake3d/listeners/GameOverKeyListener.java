@@ -1,5 +1,7 @@
 package org.avrj.snake3d.listeners;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import org.avrj.snake3d.Snake3D;
 
@@ -12,7 +14,20 @@ public class GameOverKeyListener extends InputAdapter {
     }
 
     @Override
-    public boolean keyDown(int i) {
-        return true;
+    public boolean keyDown(int keyCode) {
+        if (keyCode == Input.Keys.ESCAPE) {
+            Gdx.app.exit();
+            snake3d.multiplexer.removeProcessor(this);
+
+            return true;
+        }
+
+        if (keyCode == Input.Keys.SPACE) {
+            snake3d.getScreen().setDone();
+            snake3d.multiplexer.removeProcessor(this);
+
+            return true;
+        }
+        return false;
     }
 }

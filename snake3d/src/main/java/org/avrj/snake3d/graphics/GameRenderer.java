@@ -23,8 +23,9 @@ public class GameRenderer {
     public CameraInputController camController;
     public ModelBatch modelBatch;
     public ModelBuilder modelBuilder;
+
     private final Stage stage;
-    private final Label label;
+    private final Label fpsLabel, scoreLabel;
     private final BitmapFont font;
     private final StringBuilder stringBuilder;
 
@@ -33,9 +34,14 @@ public class GameRenderer {
 
         font = new BitmapFont();
 
-        label = new Label(" ", new Label.LabelStyle(font, Color.WHITE));
+        fpsLabel = new Label(" ", new Label.LabelStyle(font, Color.WHITE));
+        scoreLabel = new Label(" ", new Label.LabelStyle(font, Color.WHITE));
 
-        stage.addActor(label);
+        fpsLabel.setPosition(0, 0);
+        scoreLabel.setPosition(0, stage.getHeight() - 20);
+
+        stage.addActor(fpsLabel);
+        stage.addActor(scoreLabel);
 
         stringBuilder = new StringBuilder();
 
@@ -81,7 +87,12 @@ public class GameRenderer {
         stringBuilder.setLength(0);
         stringBuilder.append(" FPS: ").append(Gdx.graphics.getFramesPerSecond());
 
-        label.setText(stringBuilder);
+        fpsLabel.setText(stringBuilder);
+
+        stringBuilder.setLength(0);
+        stringBuilder.append(" Score: ").append(simulation.score);
+
+        scoreLabel.setText(stringBuilder);
 
         stage.draw();
     }
@@ -96,5 +107,7 @@ public class GameRenderer {
 
     public void dispose() {
         modelBatch.dispose();
+        font.dispose();
+        stage.dispose();
     }
 }

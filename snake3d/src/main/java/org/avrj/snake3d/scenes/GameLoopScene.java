@@ -9,16 +9,19 @@ public class GameLoopScene extends Snake3DScene {
 
     private final GameSimulation simulation;
     private final GameRenderer renderer;
-    public boolean isDone = false;
-    private double snakeSpeed = 0.5;
+    private boolean isDone = false;
+    
+    private GameLoopKeyListener keyListener;
 
     public GameLoopScene(Snake3D snake3d) {
         super(snake3d);
 
-        simulation = new GameSimulation();
+        simulation = new GameSimulation(snake3d);
         renderer = new GameRenderer();
-
-        snake3d.multiplexer.addProcessor(new GameLoopKeyListener(snake3d, this, simulation));
+        
+        keyListener = new GameLoopKeyListener(snake3d, simulation);
+        
+        snake3d.multiplexer.addProcessor(keyListener);
     }
 
     @Override
@@ -26,29 +29,10 @@ public class GameLoopScene extends Snake3DScene {
         renderer.dispose();
         simulation.dispose();
     }
-    private float timer = 0;
 
     @Override
     public void update(float delta) {
-        simulation.update();
-        
-        if (timer >= snakeSpeed) {
-            timer -= snakeSpeed;
-
-            simulation.moveSnake();
-        }
-        
-        if (simulation.checkSnakeAppleCollision()) {
-            simulation.growSnake();
-            simulation.deployApple();
-        }
-        
-        if(simulation.checkSnakeOutOfGameAreaCollision()) {
-            isDone = true;
-        }
-        
-        
-        timer += delta;
+        simulation.update(delta);
     }
 
     @Override
@@ -59,6 +43,11 @@ public class GameLoopScene extends Snake3DScene {
     @Override
     public boolean isDone() {
         return isDone;
+    }
+
+    @Override
+    public void setDone() {
+        this.isDone = true;
     }
 
 }

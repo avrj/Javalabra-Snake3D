@@ -6,10 +6,6 @@ import com.badlogic.gdx.InputAdapter;
 
 public class CommonKeyListener extends InputAdapter {
 
-    public CommonKeyListener() {
-
-    }
-
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.ENTER) {
@@ -18,8 +14,10 @@ public class CommonKeyListener extends InputAdapter {
             } else {
                 Gdx.graphics.setDisplayMode(1280, 720, false);
             }
+
             return true;
         }
+
         return false;
     }
 }

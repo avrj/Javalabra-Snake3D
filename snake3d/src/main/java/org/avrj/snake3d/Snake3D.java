@@ -10,6 +10,7 @@ import org.avrj.snake3d.scenes.GameOverScene;
 import org.avrj.snake3d.scenes.MainMenuScene;
 
 public class Snake3D extends Game {
+
     public InputMultiplexer multiplexer = new InputMultiplexer();
 
     @Override
@@ -42,7 +43,7 @@ public class Snake3D extends Game {
     @Override
     public void create() {
         setScreen(new MainMenuScene(this));
-        
+
         Gdx.input.setInputProcessor(multiplexer);
 
         multiplexer.addProcessor(new CommonKeyListener());

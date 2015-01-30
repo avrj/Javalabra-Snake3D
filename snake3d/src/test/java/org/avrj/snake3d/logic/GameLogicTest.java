@@ -38,6 +38,38 @@ public class GameLogicTest {
     }
 
     @Test
+    public void isSnakeMovingLeft() {
+        gameLogic.moveSnake(SnakeDirection.LEFT);
+
+        assertEquals(17f, gameLogic.snakeSegments.get(0).x, 0.0f);
+        assertEquals(23f, gameLogic.snakeSegments.get(0).y, 0.0f);
+    }
+
+    @Test
+    public void isSnakeMovingRight() {
+        gameLogic.moveSnake(SnakeDirection.RIGHT);
+
+        assertEquals(29f, gameLogic.snakeSegments.get(0).x, 0.0f);
+        assertEquals(23f, gameLogic.snakeSegments.get(0).y, 0.0f);
+    }
+
+    @Test
+    public void isSnakeMovingUp() {
+        gameLogic.moveSnake(SnakeDirection.UP);
+
+        assertEquals(23f, gameLogic.snakeSegments.get(0).x, 0.0f);
+        assertEquals(17f, gameLogic.snakeSegments.get(0).y, 0.0f);
+    }
+
+    @Test
+    public void isSnakeMovingDown() {
+        gameLogic.moveSnake(SnakeDirection.DOWN);
+
+        assertEquals(23f, gameLogic.snakeSegments.get(0).x, 0.0f);
+        assertEquals(23f, gameLogic.snakeSegments.get(0).y, 0.0f);
+    }
+
+    @Test
     public void isSnakeGrowing() {
         gameLogic.growSnake();
         gameLogic.moveSnake(SnakeDirection.UP);
