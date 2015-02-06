@@ -11,8 +11,11 @@ import org.avrj.snake3d.scenes.MainMenuScene;
 
 public class Snake3D extends Game {
 
-    public InputMultiplexer multiplexer = new InputMultiplexer();
+    private final InputMultiplexer multiplexer = new InputMultiplexer();
 
+    /**
+     * Renders the current screen
+     */
     @Override
     public void render() {
         Snake3DScene currentScreen = getScreen();
@@ -35,11 +38,20 @@ public class Snake3D extends Game {
 
     }
 
+    /**
+     * Returns the current Snake3DScene instance
+     *
+     * @return current Snake3DScene instance / screen
+     */
     @Override
     public Snake3DScene getScreen() {
         return (Snake3DScene) super.getScreen();
     }
 
+    /**
+     * Is called when this class is created Sets the current screen to
+     * MainMenuScene
+     */
     @Override
     public void create() {
         setScreen(new MainMenuScene(this));
@@ -47,5 +59,9 @@ public class Snake3D extends Game {
         Gdx.input.setInputProcessor(multiplexer);
 
         multiplexer.addProcessor(new CommonKeyListener());
+    }
+    
+    public InputMultiplexer getInputMultiplexer() {
+        return multiplexer;
     }
 }

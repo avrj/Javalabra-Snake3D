@@ -6,15 +6,22 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+/**
+ * Game logic class
+ */
 public class GameLogic {
 
-    public Vector2 applePosition;
-    public ArrayList<Vector2> snakeSegments;
-    public float snakeStep = 6f;
-    public SnakeDirection currentDirection;
-    public ArrayList<Vector2> planeSegments;
+    private Vector2 applePosition;
+    private final ArrayList<Vector2> snakeSegments;
+    private final float snakeStep = 6f;
+    private SnakeDirection currentDirection;
+    private final ArrayList<Vector2> planeSegments;
     private boolean hasToGrow;
+    private final int snakeStartSize = 3;
 
+    /**
+     * Initializes variables
+     */
     public GameLogic() {
         hasToGrow = false;
 
@@ -23,15 +30,21 @@ public class GameLogic {
         snakeSegments = new ArrayList<>();
         planeSegments = new ArrayList<>();
 
-        snakeSegments.add(new Vector2(23f, 23f));
+        createSnakeSegments(snakeStartSize);
 
         createSurfaceSegments();
 
         applePosition = new Vector2(0, 0);
 
-        deployApple();
+        moveAppleToRandomPosition();
     }
 
+    private void createSnakeSegments(int snakeSize) {
+        for(int i = 0; i < snakeSize; i++) {
+            snakeSegments.add(0, new Vector2(23f, 23f - (6f * i)));
+        }
+    }
+    
     private void createSurfaceSegments() {
         for (float x = -25f; x <= 25f; x += snakeStep) {
             for (float z = -25f; z <= 25f; z += snakeStep) {
@@ -40,88 +53,39 @@ public class GameLogic {
         }
     }
 
+    /**
+     * Moves the snake to SnakeDirection
+     *
+     * @param snakeDirection Direction of the snake
+     */
     public void moveSnake(SnakeDirection snakeDirection) {
         if (!hasToGrow) {
             updateSnakeSegments();
         }
 
-        switch (snakeDirection) {
-            case LEFT:
-                moveSnakeLeft();
-                break;
-            case RIGHT:
-                moveSnakeRight();
-                break;
-            case UP:
-                moveSnakeUp();
-                break;
-            case DOWN:
-                moveSnakeDown();
-                break;
-        }
-    }
-
-    private void moveSnakeLeft() {
-        if (currentDirection != SnakeDirection.RIGHT) {
+        if (currentDirection != snakeDirection.getOpposite()) {
             if (hasToGrow) {
-                snakeSegments.add(0, new Vector2(snakeSegments.get(0).x - snakeStep, snakeSegments.get(0).y));
-
+                snakeSegments.add(0, new Vector2(snakeSegments.get(0).x, snakeSegments.get(0).y));
                 hasToGrow = false;
-            } else {
-                snakeSegments.set(0, new Vector2(snakeSegments.get(0).x - snakeStep, snakeSegments.get(0).y));
             }
 
-            currentDirection = SnakeDirection.LEFT;
+            snakeSegments.get(0).add(snakeDirection.getSnakeDirection());
+
+            currentDirection = snakeDirection;
         }
     }
 
-    private void moveSnakeRight() {
-        if (currentDirection != SnakeDirection.LEFT) {
-            if (hasToGrow) {
-                snakeSegments.add(0, new Vector2(snakeSegments.get(0).x + snakeStep, snakeSegments.get(0).y));
-
-                hasToGrow = false;
-            } else {
-                snakeSegments.set(0, new Vector2(snakeSegments.get(0).x + snakeStep, snakeSegments.get(0).y));
-            }
-
-            currentDirection = SnakeDirection.RIGHT;
-        }
-    }
-
-    private void moveSnakeUp() {
-        if (currentDirection != SnakeDirection.DOWN) {
-            if (hasToGrow) {
-                snakeSegments.add(0, new Vector2(snakeSegments.get(0).x, snakeSegments.get(0).y - snakeStep));
-
-                hasToGrow = false;
-            } else {
-                snakeSegments.set(0, new Vector2(snakeSegments.get(0).x, snakeSegments.get(0).y - snakeStep));
-            }
-
-            currentDirection = SnakeDirection.UP;
-        }
-    }
-
-    private void moveSnakeDown() {
-        if (currentDirection != SnakeDirection.UP) {
-            if (hasToGrow) {
-                snakeSegments.add(0, new Vector2(snakeSegments.get(0).x, snakeSegments.get(0).y + snakeStep));
-
-                hasToGrow = false;
-            } else {
-                snakeSegments.set(0, new Vector2(snakeSegments.get(0).x, snakeSegments.get(0).y + snakeStep));
-            }
-
-            currentDirection = SnakeDirection.DOWN;
-        }
-    }
-
+    /**
+     * Method to grow the snake at next movement
+     */
     public void growSnake() {
         hasToGrow = true;
     }
 
-    public void deployApple() {
+    /**
+     * Moves the apple to a random position
+     */
+    public void moveAppleToRandomPosition() {
         Vector2 applePositionOld = applePosition;
 
         applePosition = planeSegments.get(new Random().nextInt(planeSegments.size()));
@@ -131,7 +95,7 @@ public class GameLogic {
         }
     }
 
-    public static <T> boolean hasDuplicate(Iterable<T> all) {
+    private <T> boolean hasDuplicate(Iterable<T> all) {
         Set<T> set = new HashSet<>();
 
         for (T each : all) {
@@ -142,14 +106,29 @@ public class GameLogic {
         return false;
     }
 
+    /**
+     * Checks if snake collides itself
+     *
+     * @return true if snake collides itself
+     */
     public boolean checkSnakeSelfCollision() {
         return hasDuplicate(snakeSegments);
     }
 
+    /**
+     * Checks if snake collides apple
+     *
+     * @return true if snake collides apple
+     */
     public boolean checkSnakeAppleCollision() {
         return snakeSegments.contains(applePosition);
     }
 
+    /**
+     * Checks if snake is out of game area
+     *
+     * @return true if snake is out of game area
+     */
     public boolean checkSnakeOutOfGameAreaCollision() {
         boolean isOutOfGameArea = true;
 
@@ -164,8 +143,24 @@ public class GameLogic {
 
     private void updateSnakeSegments() {
         for (int i = snakeSegments.size() - 1; i > 0; i--) {
-            snakeSegments.set(i, snakeSegments.get(i - 1));
+            snakeSegments.get(i).set(snakeSegments.get(i - 1));
         }
+    }
+
+    public Vector2 getApplePosition() {
+        return applePosition;
+    }
+    
+    public ArrayList<Vector2> getSnakeSegments() {
+        return snakeSegments;
+    }
+    
+    public ArrayList<Vector2> getPlaneSegments() {
+        return planeSegments;
+    }
+
+    public void setApplePosition(Vector2 applePosition) {
+        this.applePosition = applePosition;
     }
 
 }

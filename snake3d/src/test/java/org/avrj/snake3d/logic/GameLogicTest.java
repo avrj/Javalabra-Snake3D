@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 
 public class GameLogicTest {
 
-    private GameLogic gameLogic;
+    private final GameLogic gameLogic;
 
     public GameLogicTest() {
         gameLogic = new GameLogic();
@@ -33,40 +33,40 @@ public class GameLogicTest {
     }
 
     @Test
-    public void isSnakeSizeOneAtStart() {
-        assertEquals(1, gameLogic.snakeSegments.size());
+    public void isSnakeSizeRightAtStart() {
+        assertEquals(3, gameLogic.getSnakeSegments().size());
     }
 
     @Test
     public void isSnakeMovingLeft() {
         gameLogic.moveSnake(SnakeDirection.LEFT);
 
-        assertEquals(17f, gameLogic.snakeSegments.get(0).x, 0.0f);
-        assertEquals(23f, gameLogic.snakeSegments.get(0).y, 0.0f);
+        assertEquals(17f, gameLogic.getSnakeSegments().get(0).x, 0.0f);
+        assertEquals(11f, gameLogic.getSnakeSegments().get(0).y, 0.0f);
     }
 
     @Test
     public void isSnakeMovingRight() {
         gameLogic.moveSnake(SnakeDirection.RIGHT);
 
-        assertEquals(29f, gameLogic.snakeSegments.get(0).x, 0.0f);
-        assertEquals(23f, gameLogic.snakeSegments.get(0).y, 0.0f);
+        assertEquals(29f, gameLogic.getSnakeSegments().get(0).x, 0.0f);
+        assertEquals(11f, gameLogic.getSnakeSegments().get(0).y, 0.0f);
     }
 
     @Test
     public void isSnakeMovingUp() {
         gameLogic.moveSnake(SnakeDirection.UP);
 
-        assertEquals(23f, gameLogic.snakeSegments.get(0).x, 0.0f);
-        assertEquals(17f, gameLogic.snakeSegments.get(0).y, 0.0f);
+        assertEquals(23f, gameLogic.getSnakeSegments().get(0).x, 0.0f);
+        assertEquals(5f, gameLogic.getSnakeSegments().get(0).y, 0.0f);
     }
 
     @Test
     public void isSnakeMovingDown() {
         gameLogic.moveSnake(SnakeDirection.DOWN);
 
-        assertEquals(23f, gameLogic.snakeSegments.get(0).x, 0.0f);
-        assertEquals(23f, gameLogic.snakeSegments.get(0).y, 0.0f);
+        assertEquals(23f, gameLogic.getSnakeSegments().get(0).x, 0.0f);
+        assertEquals(11f, gameLogic.getSnakeSegments().get(0).y, 0.0f);
     }
 
     @Test
@@ -74,7 +74,7 @@ public class GameLogicTest {
         gameLogic.growSnake();
         gameLogic.moveSnake(SnakeDirection.UP);
 
-        assertEquals(2, gameLogic.snakeSegments.size());
+        assertEquals(4, gameLogic.getSnakeSegments().size());
     }
 
     @Test
@@ -101,16 +101,16 @@ public class GameLogicTest {
 
     @Test
     public void isSnakePossibleToMoveTowardsTail() {
-        Vector2 oldPosition = gameLogic.snakeSegments.get(0);
+        Vector2 oldPosition = gameLogic.getSnakeSegments().get(0);
 
         gameLogic.moveSnake(SnakeDirection.DOWN);
 
-        assertSame(oldPosition, gameLogic.snakeSegments.get(0));
+        assertSame(oldPosition, gameLogic.getSnakeSegments().get(0));
     }
 
     @Test
     public void isSnakeRealAppleCollisionDetected() {
-        gameLogic.applePosition = gameLogic.planeSegments.get(gameLogic.planeSegments.size() - 2);
+        gameLogic.setApplePosition(gameLogic.getPlaneSegments().get(gameLogic.getPlaneSegments().size() - 2));
         gameLogic.moveSnake(SnakeDirection.UP);
 
         assertTrue(gameLogic.checkSnakeAppleCollision());
@@ -123,18 +123,18 @@ public class GameLogicTest {
 
     @Test
     public void isNewApplePositionDifferentThanBefore() {
-        Vector2 oldPosition = gameLogic.applePosition;
+        Vector2 oldPosition = gameLogic.getApplePosition();
 
-        gameLogic.deployApple();
+        gameLogic.moveAppleToRandomPosition();
 
-        assertNotSame(oldPosition, gameLogic.applePosition);
+        assertNotSame(oldPosition, gameLogic.getApplePosition());
     }
 
     @Test
     public void isNewApplePositionOnPlaneSegments() {
-        gameLogic.deployApple();
+        gameLogic.moveAppleToRandomPosition();
 
-        assertTrue(gameLogic.planeSegments.contains(gameLogic.applePosition));
+        assertTrue(gameLogic.getPlaneSegments().contains(gameLogic.getApplePosition()));
     }
 
     @Test

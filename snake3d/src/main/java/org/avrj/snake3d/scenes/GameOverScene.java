@@ -10,6 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import org.avrj.snake3d.Snake3D;
 import org.avrj.snake3d.listeners.GameOverKeyListener;
 
+/**
+ * Scene for game over
+ */
 public class GameOverScene extends Snake3DScene {
 
     private boolean isDone = false;
@@ -18,6 +21,11 @@ public class GameOverScene extends Snake3DScene {
     private final Label titleLabel, playAgainGameLabel, exitLabel;
     private final StringBuilder stringBuilder;
 
+    /**
+     * Initializes variables
+     *
+     * @param snake3d the main game class
+     */
     public GameOverScene(Snake3D snake3d) {
         super(snake3d);
 
@@ -40,9 +48,12 @@ public class GameOverScene extends Snake3DScene {
 
         stringBuilder = new StringBuilder();
 
-        snake3d.multiplexer.addProcessor(new GameOverKeyListener(snake3d));
+        snake3d.getInputMultiplexer().addProcessor(new GameOverKeyListener(snake3d));
     }
 
+    /**
+     * Called when this class is not used anymore
+     */
     @Override
     public void dispose() {
         titleFont.dispose();
@@ -51,7 +62,7 @@ public class GameOverScene extends Snake3DScene {
         stage.dispose();
     }
 
-    public void loadFont() {
+    private void loadFont() {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("assets/fonts/AgentOrange.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
@@ -67,11 +78,21 @@ public class GameOverScene extends Snake3DScene {
         generator.dispose();
     }
 
+    /**
+     * Called when the screen is updated
+     *
+     * @param delta Deltatime value of the game
+     */
     @Override
     public void update(float delta) {
 
     }
 
+    /**
+     * Called when the screen is redrawn
+     *
+     * @param delta Deltatime value of the game
+     */
     @Override
     public void draw(float delta) {
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

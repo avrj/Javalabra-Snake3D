@@ -11,24 +11,37 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.graphics.g3d.environment.DirectionalShadowLight;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
+import com.badlogic.gdx.graphics.g3d.utils.DepthShaderProvider;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
+/**
+ * Class to render graphics in GameLoopScene
+ *
+ * @see GameLoopScene
+ */
 public class GameRenderer {
 
-    public Environment environment;
-    public PerspectiveCamera cam;
-    public CameraInputController camController;
-    public ModelBatch modelBatch;
-    public ModelBuilder modelBuilder;
+    private final Environment environment;
+    private final PerspectiveCamera cam;
+    private CameraInputController camController;
+    private final ModelBatch modelBatch;
+    private ModelBuilder modelBuilder;
 
     private final Stage stage;
     private final Label fpsLabel, scoreLabel;
     private final BitmapFont font;
     private final StringBuilder stringBuilder;
+    private final ModelBatch shadowBatch;
+    private final DirectionalShadowLight shadowLight;
 
+    /**
+     * Initialize the render class in GameLoopScene
+     */
     public GameRenderer() {
         stage = new Stage();
 
@@ -47,15 +60,26 @@ public class GameRenderer {
 
         environment = new Environment();
 
-        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
+        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, .4f, .4f, .4f, 1f));
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+
+        environment.add((shadowLight = new DirectionalShadowLight(1024, 1024, 30f, 30f, 1f, 100f)).set(0.8f, 0.8f, 0.8f, -1f, -.8f,
+                -.2f));
+
+        environment.shadowMap = shadowLight;
 
         modelBatch = new ModelBatch();
 
         cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
+        shadowBatch = new ModelBatch(new DepthShaderProvider());
     }
 
+    /**
+     * Called when the class should render itself.
+     *
+     * @param simulation The simulation helper class
+     * @param delta Deltatime value of the game
+     */
     public void render(GameSimulation simulation, float delta) {
         GL20 gl = Gdx.gl;
 
@@ -67,34 +91,66 @@ public class GameRenderer {
 
         setCamera();
 
-        modelBatch.begin(cam);
+        renderShadows(simulation);
 
-        for (final GameObject instance : simulation.snakeSegments) {
-            modelBatch.render(instance, environment);
-        }
+        Gdx.gl.glClearColor(0, 0, 0, 1);
 
-        for (final GameObject instance : simulation.planeSegments) {
-            modelBatch.render(instance, environment);
-        }
-
-        modelBatch.render(simulation.appleInstance, environment);
-
-        modelBatch.end();
+        renderObjects(simulation);
 
         gl.glDisable(GL20.GL_CULL_FACE);
         gl.glDisable(GL20.GL_DEPTH_TEST);
 
+        showFPS();
+        showScore(simulation);
+
+        stage.draw();
+    }
+
+    private void showFPS() {
         stringBuilder.setLength(0);
         stringBuilder.append(" FPS: ").append(Gdx.graphics.getFramesPerSecond());
 
         fpsLabel.setText(stringBuilder);
+    }
 
+    private void showScore(GameSimulation simulation) {
         stringBuilder.setLength(0);
-        stringBuilder.append(" Score: ").append(simulation.score);
+        stringBuilder.append(" Score: ").append(simulation.getScore());
 
         scoreLabel.setText(stringBuilder);
+    }
 
-        stage.draw();
+    private void renderObjects(GameSimulation simulation) {
+        modelBatch.begin(cam);
+
+        for (final GameObject instance : simulation.getSnakeSegments()) {
+            modelBatch.render(instance, environment);
+        }
+
+        for (final GameObject instance : simulation.getPlaneSegments()) {
+            modelBatch.render(instance, environment);
+        }
+
+        modelBatch.render(simulation.getAppleInstance(), environment);
+
+        modelBatch.end();
+    }
+
+    private void renderShadows(GameSimulation simulation) {
+        shadowLight.begin(Vector3.Zero, cam.direction);
+        shadowBatch.begin(shadowLight.getCamera());
+
+        for (final GameObject instance : simulation.getSnakeSegments()) {
+            shadowBatch.render(instance);
+        }
+
+        for (final GameObject instance : simulation.getPlaneSegments()) {
+            shadowBatch.render(instance);
+        }
+        shadowBatch.render(simulation.getAppleInstance());
+
+        shadowBatch.end();
+        shadowLight.end();
     }
 
     private void setCamera() {
@@ -105,6 +161,9 @@ public class GameRenderer {
         cam.update();
     }
 
+    /**
+     * Called when this class is not used anymore
+     */
     public void dispose() {
         modelBatch.dispose();
         font.dispose();
