@@ -34,24 +34,24 @@ public class GameLoopKeyListener extends InputAdapter {
      */
     @Override
     public boolean keyDown(int keyCode) {
-            switch (keyCode) {
-                case Input.Keys.UP:
-                    simulation.setSnakeDirection(SnakeDirection.UP);
+        switch (keyCode) {
+            case Input.Keys.UP:
+                simulation.setSnakeDirection(SnakeDirection.UP);
 
-                    return true;
-                case Input.Keys.DOWN:
-                    simulation.setSnakeDirection(SnakeDirection.DOWN);
+                return true;
+            case Input.Keys.DOWN:
+                simulation.setSnakeDirection(SnakeDirection.DOWN);
 
-                    return true;
-                case Input.Keys.LEFT:
-                    simulation.setSnakeDirection(SnakeDirection.LEFT);
+                return true;
+            case Input.Keys.LEFT:
+                simulation.setSnakeDirection(SnakeDirection.LEFT);
 
-                    return true;
-                case Input.Keys.RIGHT:
-                    simulation.setSnakeDirection(SnakeDirection.RIGHT);
+                return true;
+            case Input.Keys.RIGHT:
+                simulation.setSnakeDirection(SnakeDirection.RIGHT);
 
-                    return true;
-            }
+                return true;
+        }
         return false;
     }
 }

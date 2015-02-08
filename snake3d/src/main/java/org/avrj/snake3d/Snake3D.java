@@ -13,6 +13,8 @@ public class Snake3D extends Game {
 
     private final InputMultiplexer multiplexer = new InputMultiplexer();
 
+    private int score = 0;
+
     /**
      * Renders the current screen
      */
@@ -38,6 +40,14 @@ public class Snake3D extends Game {
 
     }
 
+    public void increaseScore() {
+        score++;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
     /**
      * Returns the current Snake3DScene instance
      *
@@ -60,7 +70,7 @@ public class Snake3D extends Game {
 
         multiplexer.addProcessor(new CommonKeyListener());
     }
-    
+
     public InputMultiplexer getInputMultiplexer() {
         return multiplexer;
     }

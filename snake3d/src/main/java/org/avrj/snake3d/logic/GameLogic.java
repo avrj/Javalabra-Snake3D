@@ -40,11 +40,11 @@ public class GameLogic {
     }
 
     private void createSnakeSegments(int snakeSize) {
-        for(int i = 0; i < snakeSize; i++) {
+        for (int i = 0; i < snakeSize; i++) {
             snakeSegments.add(0, new Vector2(23f, 23f - (6f * i)));
         }
     }
-    
+
     private void createSurfaceSegments() {
         for (float x = -25f; x <= 25f; x += snakeStep) {
             for (float z = -25f; z <= 25f; z += snakeStep) {
@@ -150,11 +150,11 @@ public class GameLogic {
     public Vector2 getApplePosition() {
         return applePosition;
     }
-    
+
     public ArrayList<Vector2> getSnakeSegments() {
         return snakeSegments;
     }
-    
+
     public ArrayList<Vector2> getPlaneSegments() {
         return planeSegments;
     }

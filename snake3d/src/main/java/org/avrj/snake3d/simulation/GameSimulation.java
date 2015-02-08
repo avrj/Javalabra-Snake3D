@@ -1,6 +1,5 @@
 package org.avrj.snake3d.simulation;
 
-import com.badlogic.gdx.Input;
 import org.avrj.snake3d.objects.GameObject;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
@@ -45,8 +44,6 @@ public class GameSimulation implements Disposable {
     private final Snake3D snake3d;
 
     private final double snakeSpeed = 0.5;
-
-    private int score = 0;
 
     /**
      * Initializes variables
@@ -112,11 +109,11 @@ public class GameSimulation implements Disposable {
     }
 
     public int getScore() {
-        return score;
+        return snake3d.getScore();
     }
 
     public void increaseScore() {
-        score++;
+        snake3d.increaseScore();
     }
 
     /**
@@ -129,7 +126,7 @@ public class GameSimulation implements Disposable {
             timer -= snakeSpeed;
 
             moveSnake();
-                        if (checkSnakeAppleCollision()) {
+            if (checkSnakeAppleCollision()) {
                 increaseScore();
                 growSnake();
                 moveAppleToRandomPosition();

@@ -19,7 +19,7 @@ public class MainMenuScene extends Snake3DScene {
     private boolean isDone = false;
     private final Stage stage;
     private BitmapFont titleFont, startGameFont, fullScreenFont;
-    private final Label titleLabel, startGameLabel, fullScreenLabel;
+    private Label titleLabel, startGameLabel, fullScreenLabel;
     private final StringBuilder stringBuilder;
 
     /**
@@ -31,9 +31,15 @@ public class MainMenuScene extends Snake3DScene {
         super(snake3d);
 
         stage = new Stage();
+        stringBuilder = new StringBuilder();
 
-        loadFont();
+        loadFonts();
+        createLabels();
 
+        snake3d.getInputMultiplexer().addProcessor(new MainMenuKeyListener(snake3d));
+    }
+
+    private void createLabels() {
         titleLabel = new Label(" ", new Label.LabelStyle(titleFont, Color.WHITE));
         titleLabel.setPosition(stage.getWidth() / 2 - 200, stage.getHeight() / 2);
 
@@ -47,11 +53,9 @@ public class MainMenuScene extends Snake3DScene {
         stage.addActor(startGameLabel);
         stage.addActor(fullScreenLabel);
 
-        stringBuilder = new StringBuilder();
-
-        snake3d.getInputMultiplexer().addProcessor(new MainMenuKeyListener(snake3d));
     }
-        /**
+
+    /**
      * Called when this class is not used anymore
      */
     @Override
@@ -62,7 +66,7 @@ public class MainMenuScene extends Snake3DScene {
         stage.dispose();
     }
 
-    private void loadFont() {
+    private void loadFonts() {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("assets/fonts/AgentOrange.ttf"));
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
 
@@ -77,15 +81,18 @@ public class MainMenuScene extends Snake3DScene {
 
         generator.dispose();
     }
-        /**
+
+    /**
      * Called when the screen is updated
+     *
      * @param delta Deltatime value of the game
      */
     @Override
     public void update(float delta) {
 
     }
-        /**
+
+    /**
      * Called when the screen is redrawn
      *
      * @param delta Deltatime value of the game
@@ -95,21 +102,32 @@ public class MainMenuScene extends Snake3DScene {
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
+        showTitleLabel();
+        showPlayLabel();
+        showToggleFullscreenLabel();
+
+        stage.draw();
+    }
+
+    private void showTitleLabel() {
         stringBuilder.setLength(0);
         stringBuilder.append("Snake3D");
 
         titleLabel.setText(stringBuilder);
+    }
 
+    private void showPlayLabel() {
         stringBuilder.setLength(0);
         stringBuilder.append("Press [SPACE] to start");
 
         startGameLabel.setText(stringBuilder);
+    }
 
+    public void showToggleFullscreenLabel() {
         stringBuilder.setLength(0);
         stringBuilder.append("[ENTER] to enter fullscreen");
 
         fullScreenLabel.setText(stringBuilder);
-        stage.draw();
     }
 
     @Override

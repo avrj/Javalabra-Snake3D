@@ -4,13 +4,14 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import org.avrj.snake3d.Snake3D;
 
-        /**
-     * Listens the keyboard events in MainMenuScene
-     */
+/**
+ * Listens the keyboard events in MainMenuScene
+ */
 public class MainMenuKeyListener extends InputAdapter {
 
     private final Snake3D snake3d;
-        /**
+
+    /**
      * Sets the snake3d variable
      *
      * @param snake3d The main game class
@@ -18,7 +19,8 @@ public class MainMenuKeyListener extends InputAdapter {
     public MainMenuKeyListener(Snake3D snake3d) {
         this.snake3d = snake3d;
     }
-        /**
+
+    /**
      * Overrides the keyDown method
      *
      * @param keyCode The keycode of the event
