@@ -10,9 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import org.avrj.snake3d.Snake3D;
 import org.avrj.snake3d.listeners.GameOverKeyListener;
 
-/**
- * Scene for game over
- */
 public class GameOverScene extends Snake3DScene {
 
     private boolean isDone = false;
@@ -21,11 +18,6 @@ public class GameOverScene extends Snake3DScene {
     private Label titleLabel, playAgainGameLabel, exitLabel, finalScoreLabel;
     private final StringBuilder stringBuilder;
 
-    /**
-     * Initializes variables
-     *
-     * @param snake3d the main game class
-     */
     public GameOverScene(Snake3D snake3d) {
         super(snake3d);
 
@@ -57,9 +49,6 @@ public class GameOverScene extends Snake3DScene {
         stage.addActor(exitLabel);
     }
 
-    /**
-     * Called when this class is not used anymore
-     */
     @Override
     public void dispose() {
         titleFont.dispose();
@@ -87,23 +76,8 @@ public class GameOverScene extends Snake3DScene {
         generator.dispose();
     }
 
-    /**
-     * Called when the screen is updated
-     *
-     * @param delta Deltatime value of the game
-     */
     @Override
-    public void update(float delta) {
-
-    }
-
-    /**
-     * Called when the screen is redrawn
-     *
-     * @param delta Deltatime value of the game
-     */
-    @Override
-    public void draw(float delta) {
+    public void render(float delta) {
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
@@ -124,7 +98,7 @@ public class GameOverScene extends Snake3DScene {
 
     private void showFinalScoreLabel() {
         stringBuilder.setLength(0);
-        stringBuilder.append("Final score: ").append(snake3d.getScore()).append(" points");
+        stringBuilder.append("Final score: ").append(snake3d.scoreBoard().getScore()).append(" points");
 
         finalScoreLabel.setText(stringBuilder);
     }

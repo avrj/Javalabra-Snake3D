@@ -4,7 +4,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import org.avrj.snake3d.Snake3D;
 import org.avrj.snake3d.logic.SnakeDirection;
-import org.avrj.snake3d.simulation.GameSimulation;
 
 /**
  * Listens keyboard events in GameLoopScene
@@ -13,17 +12,13 @@ import org.avrj.snake3d.simulation.GameSimulation;
 public class GameLoopKeyListener extends InputAdapter {
 
     private final Snake3D snake3d;
-    private final GameSimulation simulation;
-
     /**
      * Sets snake3d and simulation variables
      *
      * @param snake3d The main game class
-     * @param simulation The simulation helper class
      */
-    public GameLoopKeyListener(Snake3D snake3d, GameSimulation simulation) {
+    public GameLoopKeyListener(Snake3D snake3d) {
         this.snake3d = snake3d;
-        this.simulation = simulation;
     }
 
     /**
@@ -36,20 +31,19 @@ public class GameLoopKeyListener extends InputAdapter {
     public boolean keyDown(int keyCode) {
         switch (keyCode) {
             case Input.Keys.UP:
-                simulation.setSnakeDirection(SnakeDirection.UP);
-
+                snake3d.snake().setDirection(SnakeDirection.UP);
+                snake3d.camera().setTargetAngle(-90);
                 return true;
             case Input.Keys.DOWN:
-                simulation.setSnakeDirection(SnakeDirection.DOWN);
-
+                snake3d.snake().setDirection(SnakeDirection.DOWN);
                 return true;
             case Input.Keys.LEFT:
-                simulation.setSnakeDirection(SnakeDirection.LEFT);
-
+                snake3d.snake().setDirection(SnakeDirection.LEFT);
+                snake3d.camera().setTargetAngle(90);
                 return true;
             case Input.Keys.RIGHT:
-                simulation.setSnakeDirection(SnakeDirection.RIGHT);
-
+                snake3d.snake().setDirection(SnakeDirection.RIGHT);
+                snake3d.camera().setTargetAngle(-90);
                 return true;
         }
         return false;

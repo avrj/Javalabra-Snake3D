@@ -3,22 +3,12 @@ package org.avrj.snake3d;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
-/**
- * Starting point for the application.
- *
- * @author avrj
- */
 public class Snake3DGame {
 
     private static final int WIDTH = 1280;
     private static final int HEIGHT = 720;
     private static final String TITLE = "Snake3D";
 
-    /**
-     * Main-method for the application
-     *
-     * @param args Not used.
-     */
     public static void main(String[] args) {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 

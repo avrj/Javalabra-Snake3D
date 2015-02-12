@@ -5,9 +5,6 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 
-/**
- * Every 3D model is a GameObject
- */
 public class GameObject extends ModelInstance {
 
     public final Vector3 center = new Vector3();
@@ -16,11 +13,6 @@ public class GameObject extends ModelInstance {
 
     private final static BoundingBox bounds = new BoundingBox();
 
-    /**
-     * Initializes a GameObject based on Model
-     *
-     * @param model the model
-     */
     public GameObject(Model model) {
         super(model);
         calculateBoundingBox(bounds);

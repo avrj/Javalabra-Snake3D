@@ -7,3 +7,5 @@
 30.01.2015	3h	uusi luokkakaavio ja testejä
 04.02.2015	8h	refaktorointia: public-muuttujat privateiksi, tilalle getterit/setterit, logiikkaan muutoksia, metodien jakaminen useampaan pienempään metodiin
 06.02.2015	1h	3d-objektien varjostus ja varjojen renderöinti
+10.02.2015	8h	logiikan ja käyttöliittymän eriyttämistä
+12.02.2015	8h	logiikan ja käyttöliittymän eriyttäminen jatkuu + kameran kääntyminen madon liikkeen mukaan
