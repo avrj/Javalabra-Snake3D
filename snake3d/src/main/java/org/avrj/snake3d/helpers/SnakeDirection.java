@@ -1,4 +1,4 @@
-package org.avrj.snake3d.logic;
+package org.avrj.snake3d.helpers;
 
 import com.badlogic.gdx.math.Vector2;
 

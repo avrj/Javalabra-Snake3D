@@ -18,9 +18,14 @@ public class MainMenuScene extends Snake3DScene {
     private BitmapFont titleFont, startGameFont, fullScreenFont;
     private Label titleLabel, startGameLabel, fullScreenLabel;
     private final StringBuilder stringBuilder;
+    private String startGameText, titleText, fullScreenText;
 
     public MainMenuScene(Snake3D snake3d) {
         super(snake3d);
+
+        startGameText = "Press [SPACE] to start";
+        titleText = "Snake3D";
+        fullScreenText = "[ENTER] to enter fullscreen";
 
         stage = new Stage();
         stringBuilder = new StringBuilder();
@@ -33,13 +38,13 @@ public class MainMenuScene extends Snake3DScene {
 
     private void createLabels() {
         titleLabel = new Label(" ", new Label.LabelStyle(titleFont, Color.WHITE));
-        titleLabel.setPosition(stage.getWidth() / 2 - 200, stage.getHeight() / 2);
+        titleLabel.setPosition(stage.getWidth() / 2 - (titleFont.getBounds(titleText).width / 2), stage.getHeight() / 2);
 
         startGameLabel = new Label(" ", new Label.LabelStyle(startGameFont, Color.WHITE));
-        startGameLabel.setPosition(stage.getWidth() / 2 - 160, stage.getHeight() / 2 - 100);
+        startGameLabel.setPosition(stage.getWidth() / 2 - (startGameFont.getBounds(startGameText).width / 2), stage.getHeight() / 2 - 100);
 
         fullScreenLabel = new Label(" ", new Label.LabelStyle(fullScreenFont, Color.WHITE));
-        fullScreenLabel.setPosition(stage.getWidth() / 2 - 110, stage.getHeight() / 2 - 170);
+        fullScreenLabel.setPosition(stage.getWidth() / 2 - (fullScreenFont.getBounds(fullScreenText).width / 2), stage.getHeight() / 2 - 170);
 
         stage.addActor(titleLabel);
         stage.addActor(startGameLabel);
@@ -72,7 +77,12 @@ public class MainMenuScene extends Snake3DScene {
     }
 
     @Override
-    public void render(float delta) {
+    public void update(float delta) {
+        
+    }
+    
+    @Override
+    public void draw(float delta) {
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
@@ -85,21 +95,21 @@ public class MainMenuScene extends Snake3DScene {
 
     private void showTitleLabel() {
         stringBuilder.setLength(0);
-        stringBuilder.append("Snake3D");
+        stringBuilder.append(titleText);
 
         titleLabel.setText(stringBuilder);
     }
 
     private void showPlayLabel() {
         stringBuilder.setLength(0);
-        stringBuilder.append("Press [SPACE] to start");
+        stringBuilder.append(startGameText);
 
         startGameLabel.setText(stringBuilder);
     }
 
     public void showToggleFullscreenLabel() {
         stringBuilder.setLength(0);
-        stringBuilder.append("[ENTER] to enter fullscreen");
+        stringBuilder.append(fullScreenText);
 
         fullScreenLabel.setText(stringBuilder);
     }

@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import org.avrj.snake3d.Snake3D;
+import org.avrj.snake3d.helpers.GameState;
 import org.avrj.snake3d.listeners.GameOverKeyListener;
 
 public class GameOverScene extends Snake3DScene {
@@ -17,9 +18,17 @@ public class GameOverScene extends Snake3DScene {
     private BitmapFont titleFont, playAgainGameFont, exitFont, finalScoreFont;
     private Label titleLabel, playAgainGameLabel, exitLabel, finalScoreLabel;
     private final StringBuilder stringBuilder;
+    private String titleText, playAgainGameText, finalScoreText, exitText;
 
     public GameOverScene(Snake3D snake3d) {
         super(snake3d);
+
+        snake3d.setGameState(GameState.Paused);
+        
+        finalScoreText = "Final score: " + snake3d.scoreBoard().getScore() + " points";
+        titleText = "Game Over";
+        playAgainGameText = "Press [SPACE] to play again";
+        exitText = "[ESC] to exit";
 
         stage = new Stage();
         stringBuilder = new StringBuilder();
@@ -32,16 +41,16 @@ public class GameOverScene extends Snake3DScene {
 
     private void createLabels() {
         titleLabel = new Label(" ", new Label.LabelStyle(titleFont, Color.WHITE));
-        titleLabel.setPosition(stage.getWidth() / 2 - 200, stage.getHeight() / 2);
+        titleLabel.setPosition(stage.getWidth() / 2 - (titleFont.getBounds(titleText).width / 2), stage.getHeight() / 2);
 
         finalScoreLabel = new Label(" ", new Label.LabelStyle(finalScoreFont, Color.WHITE));
-        finalScoreLabel.setPosition(stage.getWidth() / 2 + 70, stage.getHeight() / 2 - 70);
+        finalScoreLabel.setPosition(stage.getWidth() / 2 - (finalScoreFont.getBounds(finalScoreText).width / 2), stage.getHeight() / 2 - 70);
 
         playAgainGameLabel = new Label(" ", new Label.LabelStyle(playAgainGameFont, Color.WHITE));
-        playAgainGameLabel.setPosition(stage.getWidth() / 2 - 100, stage.getHeight() / 2 - 150);
+        playAgainGameLabel.setPosition(stage.getWidth() / 2 - (playAgainGameFont.getBounds(playAgainGameText).width / 2), stage.getHeight() / 2 - 150);
 
         exitLabel = new Label(" ", new Label.LabelStyle(exitFont, Color.WHITE));
-        exitLabel.setPosition(stage.getWidth() / 2 + 100, stage.getHeight() / 2 - 200);
+        exitLabel.setPosition(stage.getWidth() / 2 - (exitFont.getBounds(exitText).width / 2), stage.getHeight() / 2 - 200);
 
         stage.addActor(titleLabel);
         stage.addActor(finalScoreLabel);
@@ -77,7 +86,12 @@ public class GameOverScene extends Snake3DScene {
     }
 
     @Override
-    public void render(float delta) {
+    public void update(float delta) {
+        
+    }
+    
+    @Override
+    public void draw(float delta) {
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
@@ -91,21 +105,21 @@ public class GameOverScene extends Snake3DScene {
 
     private void showTitleLabel() {
         stringBuilder.setLength(0);
-        stringBuilder.append("Game over");
+        stringBuilder.append(titleText);
 
         titleLabel.setText(stringBuilder);
     }
 
     private void showFinalScoreLabel() {
         stringBuilder.setLength(0);
-        stringBuilder.append("Final score: ").append(snake3d.scoreBoard().getScore()).append(" points");
+        stringBuilder.append(finalScoreText);
 
         finalScoreLabel.setText(stringBuilder);
     }
 
     private void showPlayAgainLabel() {
         stringBuilder.setLength(0);
-        stringBuilder.append("Press [SPACE] to play again");
+        stringBuilder.append(playAgainGameText);
 
         playAgainGameLabel.setText(stringBuilder);
     }
@@ -113,7 +127,7 @@ public class GameOverScene extends Snake3DScene {
     private void showExitLabel() {
 
         stringBuilder.setLength(0);
-        stringBuilder.append("[ESC] to exit");
+        stringBuilder.append(exitText);
 
         exitLabel.setText(stringBuilder);
     }

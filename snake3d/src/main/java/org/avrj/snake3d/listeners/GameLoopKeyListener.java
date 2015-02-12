@@ -3,7 +3,8 @@ package org.avrj.snake3d.listeners;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import org.avrj.snake3d.Snake3D;
-import org.avrj.snake3d.logic.SnakeDirection;
+import org.avrj.snake3d.helpers.GameState;
+import org.avrj.snake3d.helpers.SnakeDirection;
 
 /**
  * Listens keyboard events in GameLoopScene
@@ -12,6 +13,7 @@ import org.avrj.snake3d.logic.SnakeDirection;
 public class GameLoopKeyListener extends InputAdapter {
 
     private final Snake3D snake3d;
+
     /**
      * Sets snake3d and simulation variables
      *
@@ -30,13 +32,6 @@ public class GameLoopKeyListener extends InputAdapter {
     @Override
     public boolean keyDown(int keyCode) {
         switch (keyCode) {
-            case Input.Keys.UP:
-                snake3d.snake().setDirection(SnakeDirection.UP);
-                snake3d.camera().setTargetAngle(-90);
-                return true;
-            case Input.Keys.DOWN:
-                snake3d.snake().setDirection(SnakeDirection.DOWN);
-                return true;
             case Input.Keys.LEFT:
                 snake3d.snake().setDirection(SnakeDirection.LEFT);
                 snake3d.camera().setTargetAngle(90);
@@ -44,6 +39,13 @@ public class GameLoopKeyListener extends InputAdapter {
             case Input.Keys.RIGHT:
                 snake3d.snake().setDirection(SnakeDirection.RIGHT);
                 snake3d.camera().setTargetAngle(-90);
+                return true;
+            case Input.Keys.ESCAPE:
+                if (snake3d.getGameState().equals(GameState.Running)) {
+                    snake3d.setGameState(GameState.Paused);
+                } else {
+                    snake3d.setGameState(GameState.Running);
+                }
                 return true;
         }
         return false;

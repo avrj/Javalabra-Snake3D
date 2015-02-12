@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import org.avrj.snake3d.helpers.GameState;
 import org.avrj.snake3d.listeners.CommonKeyListener;
 import org.avrj.snake3d.listeners.GameLoopKeyListener;
 import org.avrj.snake3d.listeners.GameOverKeyListener;
@@ -18,37 +19,46 @@ import org.avrj.snake3d.scenes.GameOverScene;
 import org.avrj.snake3d.scenes.MainMenuScene;
 
 public class Snake3D extends Game {
+
     private Apple apple;
     private Snake snake;
     private Camera camera;
     private GameSurface gameSurface;
     private ScoreBoard scoreBoard;
-    
+    private GameState gameState;
+
     private final InputMultiplexer inputMultiplexer = new InputMultiplexer();
 
     private InputProcessor currentInputProcessor;
-    
-    
+
     public Apple apple() {
         return apple;
     }
-    
+
     public Snake snake() {
         return snake;
     }
-    
+
     public Camera camera() {
         return camera;
     }
-  
+
     public GameSurface gameSurface() {
         return gameSurface;
     }
-    
+
     public ScoreBoard scoreBoard() {
         return scoreBoard;
     }
-    
+
+    public GameState getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
+    }
+
     @Override
     public void render() {
         Snake3DScene currentScreen = getScreen();
@@ -91,13 +101,14 @@ public class Snake3D extends Game {
         camera = new Camera();
         gameSurface = new GameSurface();
         scoreBoard = new ScoreBoard();
-        
+        gameState = GameState.Paused;
+
         apple.moveAppleToRandomPosition(gameSurface.getVectors(), snake.getVectors());
-        
+
         Gdx.input.setInputProcessor(inputMultiplexer);
-        
+
         inputMultiplexer.addProcessor(new CommonKeyListener());
-        
+
         setScene(new MainMenuScene(this), null);
     }
 

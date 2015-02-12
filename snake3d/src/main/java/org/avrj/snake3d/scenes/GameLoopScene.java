@@ -22,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import java.util.ArrayList;
 import org.avrj.snake3d.Snake3D;
+import org.avrj.snake3d.helpers.GameState;
 import org.avrj.snake3d.objects.GameObject;
 
 public class GameLoopScene extends Snake3DScene {
@@ -56,6 +57,8 @@ public class GameLoopScene extends Snake3DScene {
 
     public GameLoopScene(Snake3D snake3d) {
         super(snake3d);
+
+        snake3d.setGameState(GameState.Running);
 
         snakeSegments = new ArrayList<>();
         planeSegments = new ArrayList<>();
@@ -150,7 +153,11 @@ public class GameLoopScene extends Snake3DScene {
     }
 
     @Override
-    public void render(float delta) {
+    public void update(float delta) {
+        if (snake3d.getGameState().equals(GameState.Paused)) {
+            return;
+        }
+
         if (timer >= snakeSpeed) {
             timer -= snakeSpeed;
 
@@ -170,7 +177,10 @@ public class GameLoopScene extends Snake3DScene {
         }
 
         timer += delta;
+    }
 
+    @Override
+    public void draw(float delta) {
         GL20 gl = Gdx.gl;
 
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
