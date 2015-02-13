@@ -1,4 +1,3 @@
-
 **Aihe:** Snake3D - Matopeli 3D-perspektiivistä
 
 Tarkoituksena toteuttaa klassinen matopeli 3D-perspektiivistä. 
@@ -12,6 +11,9 @@ Peli tulee käyttämään LibGDX-grafiikkakirjastoa (http://libgdx.badlogicgames
 **Käyttäjien toiminnot:**
 - Vaikeustason valitseminen
 - Pelin aloittaminen
+- Pelin keskeyttäminen
 - Madon ohjaaminen
-- Madon törmätessä/mennessä yli rajojen/osuessa itseensä pelin uudelleen aloittaminen
+- Omenoiden kerääminen (kerryttää pisteitä)
+- Madon osuessa itseensä tai liikkuessa pelikentän ulkopuolelle peli päättyy
+- Pelin päätyttyä mahdollisuus pelata uudelleen tai lopettaa ohjelman suorittaminen
 - Edellisten pelien pisteiden tarkastelu
