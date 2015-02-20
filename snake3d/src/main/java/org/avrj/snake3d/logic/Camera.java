@@ -17,36 +17,10 @@ public class Camera {
 
     }
 
-    public float getDefaultAngle() {
-        return defaultAngle;
-    }
-
     public float getAngle() {
         return angle;
     }
-    
-    public float getAngleStep() {
-        return angleStep;
-    }
-    
-    public void setAngle() {
-        this.angle += angleStep;
-    }
-
-    public boolean isTurning() {
-        return isTurning;
-    }
-
-    public void setTurningFalse() {
-        isTurning = false;
-    }
-
-    public float getTargetAngle() {
-        return targetAngle;
-    }
-
-    public void setTargetAngle(float camAngle) {
-        targetAngle += camAngle;
-        isTurning = true;
+    public void setAngle(float angle) {
+        this.angle = angle;
     }
 }

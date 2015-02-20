@@ -264,12 +264,6 @@ public class GameLoopScene extends Snake3DScene {
         snakeSegments.get(0).transform.getTranslation(snakeHeadPosition);
 
         rotateCameraAround(snakeHeadPosition, snake3d.camera().getAngle());
-
-        if (snake3d.camera().isTurning() && snake3d.camera().getAngle() < snake3d.camera().getDefaultAngle() + snake3d.camera().getTargetAngle()) {
-            snake3d.camera().setAngle();
-        } else {
-            snake3d.camera().setTurningFalse();
-        }
     }
 
     private void rotateCameraAround(Vector3 position, float angle) {

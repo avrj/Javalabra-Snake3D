@@ -8,6 +8,7 @@ import org.avrj.snake3d.helpers.GameState;
 import org.avrj.snake3d.listeners.CommonKeyListener;
 import org.avrj.snake3d.listeners.GameLoopKeyListener;
 import org.avrj.snake3d.listeners.GameOverKeyListener;
+import org.avrj.snake3d.listeners.ScoreBoardKeyListener;
 import org.avrj.snake3d.logic.Apple;
 import org.avrj.snake3d.logic.Camera;
 import org.avrj.snake3d.logic.GameSurface;
@@ -17,6 +18,7 @@ import org.avrj.snake3d.scenes.Snake3DScene;
 import org.avrj.snake3d.scenes.GameLoopScene;
 import org.avrj.snake3d.scenes.GameOverScene;
 import org.avrj.snake3d.scenes.MainMenuScene;
+import org.avrj.snake3d.scenes.ScoreBoardScene;
 
 public class Snake3D extends Game {
 
@@ -30,6 +32,9 @@ public class Snake3D extends Game {
     private final InputMultiplexer inputMultiplexer = new InputMultiplexer();
 
     private InputProcessor currentInputProcessor;
+    
+    public ScoreBoardScene scoreBoardScene;
+    public MainMenuScene mainMenuScene;
 
     public Apple apple() {
         return apple;
@@ -79,6 +84,8 @@ public class Snake3D extends Game {
 
             if (currentScreen instanceof MainMenuScene) {
                 setScene(new GameLoopScene(this), new GameLoopKeyListener(this));
+            } else if (currentScreen instanceof ScoreBoardScene) {
+                setScene(new ScoreBoardScene(this), new ScoreBoardKeyListener(this));
             } else {
                 if (currentScreen instanceof GameLoopScene) {
                     setScene(new GameOverScene(this), new GameOverKeyListener(this));
@@ -102,6 +109,8 @@ public class Snake3D extends Game {
         gameSurface = new GameSurface();
         scoreBoard = new ScoreBoard();
         gameState = GameState.Paused;
+        scoreBoardScene = new ScoreBoardScene(this);
+        mainMenuScene = new MainMenuScene(this);
 
         apple.moveAppleToRandomPosition(gameSurface.getVectors(), snake.getVectors());
 
@@ -112,7 +121,7 @@ public class Snake3D extends Game {
         setScene(new MainMenuScene(this), null);
     }
 
-    private void setScene(Snake3DScene scene, InputProcessor inputProcessor) {
+    public void setScene(Snake3DScene scene, InputProcessor inputProcessor) {
         setScreen(scene);
 
         if (inputProcessor != null) {

@@ -37,6 +37,7 @@ public class GameOverScene extends Snake3DScene {
         createLabels();
 
         snake3d.getInputMultiplexer().addProcessor(new GameOverKeyListener(snake3d));
+        snake3d.scoreBoard().saveScore();
     }
 
     private void createLabels() {
