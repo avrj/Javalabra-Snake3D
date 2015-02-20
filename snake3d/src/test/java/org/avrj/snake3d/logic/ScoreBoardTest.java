@@ -152,29 +152,29 @@ public class ScoreBoardTest {
 
         assertTrue(scoreBoard.getSavedScores().isEmpty());
     }
-    
+
     @Test
     public void savedScoresAreReturned() {
         File scoresFilePath = new File("savedScores/scores.txt");
-        
+
         scoresFilePath.delete();
-        
+
         try {
             scoresFilePath.createNewFile();
         } catch (IOException e) {
 
         }
-        
+
         scoreBoard.increaseScore();
         scoreBoard.increaseScore();
         scoreBoard.saveScore();
         assertEquals(1, scoreBoard.getSavedScores().size());
-        
+
         scoreBoard.increaseScore();
         scoreBoard.increaseScore();
         scoreBoard.saveScore();
         System.out.println(scoreBoard.getSavedScores());
         assertEquals(2, scoreBoard.getSavedScores().size());
-        
+
     }
 }

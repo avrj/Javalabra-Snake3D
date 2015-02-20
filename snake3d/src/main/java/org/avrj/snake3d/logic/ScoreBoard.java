@@ -52,6 +52,7 @@ public class ScoreBoard {
 
     /**
      * A method to return the saved scores from a file
+     *
      * @return List of saved scores
      */
     public Map<String, Integer> getSavedScores() {
@@ -68,22 +69,24 @@ public class ScoreBoard {
                 String row;
 
                 while ((row = in.readLine()) != null) {
-                    if(savedScores.size() == 10)
+                    if (savedScores.size() == 10) {
                         break;
-                    
-                    if(!row.contains("|"))
+                    }
+
+                    if (!row.contains("|")) {
                         continue;
+                    }
 
                     String[] splitted_row = row.split("\\|");
-                    
+
                     long rowTimestamp = Long.parseLong(splitted_row[0]);
                     Integer rowScore = Integer.parseInt(splitted_row[1]);
-                    
-                    Date date = new Date(rowTimestamp*1000L);
+
+                    Date date = new Date(rowTimestamp * 1000L);
                     SimpleDateFormat sdf = new SimpleDateFormat("dd.MM. HH:mm:ss");
                     sdf.setTimeZone(TimeZone.getTimeZone("Europe/Helsinki"));
                     String formattedDate = sdf.format(date);
-                    
+
                     savedScores.put(formattedDate, rowScore);
                 }
             } catch (FileNotFoundException e) {
@@ -105,6 +108,7 @@ public class ScoreBoard {
 
     /**
      * Saves the current score to a file
+     *
      * @return true if score is saved
      */
     public boolean saveScore() {
@@ -128,7 +132,7 @@ public class ScoreBoard {
         }
 
         long currentTimestamp = System.currentTimeMillis() / 1000L;
-        
+
         try (PrintWriter printWriter = new PrintWriter(new FileOutputStream(file, true))) {
             printWriter.println(currentTimestamp + "|" + score);
         } catch (IOException e) {

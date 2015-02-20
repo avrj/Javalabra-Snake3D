@@ -45,16 +45,16 @@ public class ScoreBoardScene extends Snake3DScene {
     private void createLabels() {
         titleLabel = new Label(" ", new Label.LabelStyle(titleFont, Color.WHITE));
         titleLabel.setPosition(stage.getWidth() / 2 - (titleFont.getBounds(titleText).width / 2), stage.getHeight() - 100);
-        
+
         int y = 0;
         for (Map.Entry<String, Integer> entry : snake3d.scoreBoard().getSavedScores().entrySet()) {
             String timestamp = entry.getKey();
             Integer score = entry.getValue();
 
             Label scoreLabel = new Label(" ", new Label.LabelStyle(scoreFont, Color.WHITE));
-            scoreLabel.setPosition(stage.getWidth() / 2 - (scoreFont.getBounds(timestamp + " " + score + " points").width / 2), stage.getHeight() - (160 + (35*y)));
+            scoreLabel.setPosition(stage.getWidth() / 2 - (scoreFont.getBounds(timestamp + " " + score + " points").width / 2), stage.getHeight() - (160 + (35 * y)));
             scoreLabels.add(scoreLabel);
-            
+
             y++;
         }
 

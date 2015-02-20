@@ -23,6 +23,7 @@ public class GameLoopKeyListener extends InputAdapter {
         this.snake3d = snake3d;
     }
     private SnakeDirection tempDirection = SnakeDirection.UP;
+
     /**
      * Overrides the keyDown method
      *
@@ -33,53 +34,53 @@ public class GameLoopKeyListener extends InputAdapter {
     public boolean keyDown(int keyCode) {
         switch (keyCode) {
             case Input.Keys.LEFT:
-                if(tempDirection.equals(SnakeDirection.UP)) {
+                if (tempDirection.equals(SnakeDirection.UP)) {
                     snake3d.snake().setDirection(SnakeDirection.LEFT);
                     tempDirection = SnakeDirection.LEFT;
                     snake3d.camera().setAngle(0);
-                } else if(tempDirection.equals(SnakeDirection.LEFT)) {
+                } else if (tempDirection.equals(SnakeDirection.LEFT)) {
                     snake3d.snake().setDirection(SnakeDirection.DOWN);
                     tempDirection = SnakeDirection.DOWN;
                     snake3d.camera().setAngle(90);
-                } else if(tempDirection.equals(SnakeDirection.DOWN)) {
+                } else if (tempDirection.equals(SnakeDirection.DOWN)) {
                     snake3d.snake().setDirection(SnakeDirection.RIGHT);
                     tempDirection = SnakeDirection.RIGHT;
                     snake3d.camera().setAngle(180);
-                } else if(tempDirection.equals(SnakeDirection.RIGHT)) {
+                } else if (tempDirection.equals(SnakeDirection.RIGHT)) {
                     snake3d.snake().setDirection(SnakeDirection.UP);
                     tempDirection = SnakeDirection.UP;
                     snake3d.camera().setAngle(270);
                 }
-                
+
                 return true;
             case Input.Keys.RIGHT:
-                if(tempDirection.equals(SnakeDirection.UP)) {
+                if (tempDirection.equals(SnakeDirection.UP)) {
                     snake3d.snake().setDirection(SnakeDirection.RIGHT);
                     tempDirection = SnakeDirection.RIGHT;
-                    
+
                     snake3d.camera().setAngle(-180);
-                } else if(tempDirection.equals(SnakeDirection.LEFT)) {
+                } else if (tempDirection.equals(SnakeDirection.LEFT)) {
                     snake3d.snake().setDirection(SnakeDirection.UP);
                     tempDirection = SnakeDirection.UP;
                     snake3d.camera().setAngle(-90);
-                } else if(tempDirection.equals(SnakeDirection.DOWN)) {
+                } else if (tempDirection.equals(SnakeDirection.DOWN)) {
                     snake3d.snake().setDirection(SnakeDirection.LEFT);
                     tempDirection = SnakeDirection.LEFT;
                     snake3d.camera().setAngle(0);
-                } else if(tempDirection.equals(SnakeDirection.RIGHT)) {
+                } else if (tempDirection.equals(SnakeDirection.RIGHT)) {
                     snake3d.snake().setDirection(SnakeDirection.DOWN);
                     tempDirection = SnakeDirection.DOWN;
                     snake3d.camera().setAngle(90);
                 }
 
-                return true;           
+                return true;
             case Input.Keys.ESCAPE:
                 if (snake3d.getGameState().equals(GameState.Running)) {
                     snake3d.setGameState(GameState.Paused);
                 } else {
                     snake3d.setGameState(GameState.Running);
                 }
-                
+
                 return true;
         }
         return false;

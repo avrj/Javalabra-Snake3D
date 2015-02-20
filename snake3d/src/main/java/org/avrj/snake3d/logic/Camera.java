@@ -2,7 +2,7 @@ package org.avrj.snake3d.logic;
 
 /**
  * A helper class for the 3d-camera
- * 
+ *
  * @author araiha
  */
 public class Camera {
@@ -20,6 +20,7 @@ public class Camera {
     public float getAngle() {
         return angle;
     }
+
     public void setAngle(float angle) {
         this.angle = angle;
     }

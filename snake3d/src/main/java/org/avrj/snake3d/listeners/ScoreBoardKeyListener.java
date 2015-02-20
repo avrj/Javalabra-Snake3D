@@ -33,10 +33,10 @@ public class ScoreBoardKeyListener extends InputAdapter {
     public boolean keyDown(int keyCode) {
         if (keyCode == Input.Keys.ESCAPE) {
             snake3d.setScene(snake3d.mainMenuScene, new MainMenuKeyListener(snake3d));
-            
+
             return true;
         }
-        
+
         return false;
     }
 }

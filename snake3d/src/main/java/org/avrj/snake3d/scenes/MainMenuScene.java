@@ -47,7 +47,7 @@ public class MainMenuScene extends Snake3DScene {
         fullScreenLabel = new Label(" ", new Label.LabelStyle(fullScreenFont, Color.WHITE));
         fullScreenLabel.setPosition(stage.getWidth() / 2 - (fullScreenFont.getBounds(fullScreenText).width / 2), stage.getHeight() / 2 - 170);
 
-                viewScoreBoardLabel = new Label(" ", new Label.LabelStyle(viewScoreBoardFont, Color.WHITE));
+        viewScoreBoardLabel = new Label(" ", new Label.LabelStyle(viewScoreBoardFont, Color.WHITE));
         viewScoreBoardLabel.setPosition(stage.getWidth() / 2 - (viewScoreBoardFont.getBounds(viewScoreBoardText).width / 2), 100);
 
         stage.addActor(titleLabel);
@@ -78,17 +78,17 @@ public class MainMenuScene extends Snake3DScene {
         parameter.size = 20;
         fullScreenFont = generator.generateFont(parameter);
 
-                parameter.size = 20;
+        parameter.size = 20;
         viewScoreBoardFont = generator.generateFont(parameter);
-        
+
         generator.dispose();
     }
 
     @Override
     public void update(float delta) {
-        
+
     }
-    
+
     @Override
     public void draw(float delta) {
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -129,6 +129,7 @@ public class MainMenuScene extends Snake3DScene {
 
         viewScoreBoardLabel.setText(stringBuilder);
     }
+
     @Override
     public boolean isDone() {
         return isDone;

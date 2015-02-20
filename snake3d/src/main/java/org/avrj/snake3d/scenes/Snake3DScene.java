@@ -14,8 +14,9 @@ public abstract class Snake3DScene implements Screen {
     public abstract boolean isDone();
 
     public abstract void setDone();
-    
+
     public abstract void update(float delta);
+
     public abstract void draw(float delta);
 
     @Override

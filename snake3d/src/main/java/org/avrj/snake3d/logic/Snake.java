@@ -51,7 +51,7 @@ public class Snake {
 
     /**
      * A method to move the snake to desired direction
-     * 
+     *
      * @param snakeDirection The direction of the snake
      */
     public void moveTo(SnakeDirection snakeDirection) {
@@ -80,7 +80,7 @@ public class Snake {
 
     /**
      * A method to check if the snake is colliding itself
-     * 
+     *
      * @return true if snake is colliding itself
      */
     public boolean selfCollision() {
@@ -89,7 +89,7 @@ public class Snake {
 
     /**
      * A method to check if the snake is colliding an apple
-     * 
+     *
      * @param vector The apple object
      * @return true if colliding
      */
@@ -99,7 +99,7 @@ public class Snake {
 
     /**
      * A method to check if snake is out of game area
-     * 
+     *
      * @param gameArea List of game area (GameSurface) blocks
      * @return true if out
      */

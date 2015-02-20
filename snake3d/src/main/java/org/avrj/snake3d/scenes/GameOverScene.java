@@ -24,7 +24,7 @@ public class GameOverScene extends Snake3DScene {
         super(snake3d);
 
         snake3d.setGameState(GameState.Paused);
-        
+
         finalScoreText = "Final score: " + snake3d.scoreBoard().getScore() + " points";
         titleText = "Game Over";
         playAgainGameText = "Press [SPACE] to play again";
@@ -88,9 +88,9 @@ public class GameOverScene extends Snake3DScene {
 
     @Override
     public void update(float delta) {
-        
+
     }
-    
+
     @Override
     public void draw(float delta) {
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

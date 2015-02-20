@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 /**
  * The surface of the game (consists of blocks)
- * 
+ *
  * @author araiha
  */
 public class GameSurface {

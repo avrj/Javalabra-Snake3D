@@ -168,6 +168,7 @@ public class GameLoopScene extends Snake3DScene {
                 snake3d.scoreBoard().increaseScore();
                 snake3d.snake().grow();
                 snake3d.apple().moveAppleToRandomPosition(snake3d.gameSurface().getVectors(), snake3d.snake().getVectors());
+
                 updateAppleInstancePosition();
             }
 

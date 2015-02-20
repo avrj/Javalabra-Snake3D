@@ -32,7 +32,7 @@ public class Snake3D extends Game {
     private final InputMultiplexer inputMultiplexer = new InputMultiplexer();
 
     private InputProcessor currentInputProcessor;
-    
+
     public ScoreBoardScene scoreBoardScene;
     public MainMenuScene mainMenuScene;
 
