@@ -47,8 +47,8 @@ public class ScoreBoardScene extends Snake3DScene {
         titleLabel.setPosition(stage.getWidth() / 2 - (titleFont.getBounds(titleText).width / 2), stage.getHeight() - 100);
 
         int y = 0;
-        for (Map.Entry<String, Integer> entry : snake3d.scoreBoard().getSavedScores().entrySet()) {
-            String timestamp = entry.getKey();
+        for (Map.Entry<Long, Integer> entry : snake3d.scoreBoard().getSavedScores().entrySet()) {
+            String timestamp = snake3d.scoreBoard().formatTimestamp(entry.getKey());
             Integer score = entry.getValue();
 
             Label scoreLabel = new Label(" ", new Label.LabelStyle(scoreFont, Color.WHITE));
@@ -121,8 +121,8 @@ public class ScoreBoardScene extends Snake3DScene {
 
     private void showScoreLabels() {
         int i = 0;
-        for (Map.Entry<String, Integer> entry : snake3d.scoreBoard().getSavedScores().entrySet()) {
-            String timestamp = entry.getKey();
+        for (Map.Entry<Long, Integer> entry : snake3d.scoreBoard().getSavedScores().entrySet()) {
+            String timestamp = snake3d.scoreBoard().formatTimestamp(entry.getKey());
             Integer score = entry.getValue();
 
             stringBuilder.setLength(0);

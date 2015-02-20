@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
@@ -23,25 +24,28 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import java.util.ArrayList;
 import org.avrj.snake3d.Snake3D;
 import org.avrj.snake3d.helpers.GameState;
-import org.avrj.snake3d.objects.GameObject;
+import org.avrj.snake3d.logic.Apple;
+import org.avrj.snake3d.logic.Camera;
+import org.avrj.snake3d.logic.GameSurface;
+import org.avrj.snake3d.logic.Snake;
 
 public class GameLoopScene extends Snake3DScene {
 
-    private final ArrayList<GameObject> snakeSegments;
-    private final ArrayList<GameObject> planeSegments;
+    private final ArrayList<ModelInstance> snakeSegments;
+    private final ArrayList<ModelInstance> planeSegments;
 
     private Model appleModel;
     private Model snakeModel;
     private Model planeModel;
 
-    private GameObject appleInstance;
+    private ModelInstance appleInstance;
     private ModelBuilder modelBuilder;
     private final Environment environment;
     private final PerspectiveCamera cam;
     private CameraInputController camController;
     private final ModelBatch modelBatch;
-    private GameObject snakeInstance;
-    private GameObject planeInstance;
+    private ModelInstance snakeInstance;
+    private ModelInstance planeInstance;
 
     private final Stage stage;
     private final Label fpsLabel, scoreLabel;
@@ -55,8 +59,22 @@ public class GameLoopScene extends Snake3DScene {
 
     private boolean isDone = false;
 
+    private Apple apple;
+    private Snake snake;
+    private Camera camera;
+    private GameSurface gameSurface;
+
     public GameLoopScene(Snake3D snake3d) {
         super(snake3d);
+        
+        snake3d.scoreBoard().clearScore();
+
+        apple = new Apple();
+        snake = new Snake();
+        camera = new Camera();
+        gameSurface = new GameSurface();
+
+        apple.moveAppleToRandomPosition(gameSurface.getVectors(), snake.getVectors());
 
         snake3d.setGameState(GameState.Running);
 
@@ -98,18 +116,34 @@ public class GameLoopScene extends Snake3DScene {
         shadowBatch = new ModelBatch(new DepthShaderProvider());
     }
 
+    public Apple apple() {
+        return apple;
+    }
+
+    public Snake snake() {
+        return snake;
+    }
+
+    public Camera camera() {
+        return camera;
+    }
+
+    public GameSurface gameSurface() {
+        return gameSurface;
+    }
+
     private void createModels() {
         modelBuilder = new ModelBuilder();
 
         appleModel = modelBuilder.createSphere(4f, 4f, 4f, 20, 20, new Material(ColorAttribute.createDiffuse(Color.RED)), Usage.Position | Usage.Normal);
 
-        appleInstance = new GameObject(appleModel);
-        appleInstance.transform.setToTranslation(new Vector3(snake3d.apple().getPosition().x, 3f, snake3d.apple().getPosition().y));
+        appleInstance = new ModelInstance(appleModel);
+        appleInstance.transform.setToTranslation(new Vector3(apple().getPosition().x, 3f, apple().getPosition().y));
 
         snakeModel = modelBuilder.createBox(5f, 5f, 5f, new Material(ColorAttribute.createDiffuse(Color.GREEN)), Usage.Position | Usage.Normal);
 
-        snakeInstance = new GameObject(snakeModel);
-        snakeInstance.transform.setToTranslation(new Vector3(snake3d.snake().getVectors().get(0).x, 1f, snake3d.snake().getVectors().get(0).y));
+        snakeInstance = new ModelInstance(snakeModel);
+        snakeInstance.transform.setToTranslation(new Vector3(snake().getVectors().get(0).x, 1f, snake().getVectors().get(0).y));
 
         snakeSegments.add(snakeInstance);
 
@@ -121,8 +155,8 @@ public class GameLoopScene extends Snake3DScene {
     }
 
     private void createPlane() {
-        for (Vector2 planePosition : snake3d.gameSurface().getVectors()) {
-            planeInstance = new GameObject(planeModel);
+        for (Vector2 planePosition : gameSurface().getVectors()) {
+            planeInstance = new ModelInstance(planeModel);
             planeInstance.transform.setToTranslation(new Vector3(planePosition.x, 0, planePosition.y));
             planeSegments.add(planeInstance);
         }
@@ -139,14 +173,14 @@ public class GameLoopScene extends Snake3DScene {
     }
 
     public void updateAppleInstancePosition() {
-        appleInstance.transform.setTranslation(snake3d.apple().getPosition().x, 3f, snake3d.apple().getPosition().y);
+        appleInstance.transform.setTranslation(apple().getPosition().x, 3f, apple().getPosition().y);
     }
 
     private void updateSnakeSegmentInstances() {
         snakeSegments.clear();
 
-        for (Vector2 snakeSegment : snake3d.snake().getVectors()) {
-            snakeInstance = new GameObject(snakeModel);
+        for (Vector2 snakeSegment : snake().getVectors()) {
+            snakeInstance = new ModelInstance(snakeModel);
             snakeInstance.transform.setToTranslation(new Vector3(snakeSegment.x, 3f, snakeSegment.y));
             snakeSegments.add(snakeInstance);
         }
@@ -161,18 +195,18 @@ public class GameLoopScene extends Snake3DScene {
         if (timer >= snakeSpeed) {
             timer -= snakeSpeed;
 
-            snake3d.snake().move();
+            snake().move();
             updateSnakeSegmentInstances();
 
-            if (snake3d.snake().collides(snake3d.apple().getPosition())) {
+            if (snake().collides(apple().getPosition())) {
                 snake3d.scoreBoard().increaseScore();
-                snake3d.snake().grow();
-                snake3d.apple().moveAppleToRandomPosition(snake3d.gameSurface().getVectors(), snake3d.snake().getVectors());
+                snake().grow();
+                apple().moveAppleToRandomPosition(gameSurface().getVectors(), snake().getVectors());
 
                 updateAppleInstancePosition();
             }
 
-            if (snake3d.snake().isOutOfGameArea(snake3d.gameSurface().getVectors()) || snake3d.snake().selfCollision()) {
+            if (snake().isOutOfGameArea(gameSurface().getVectors()) || snake().selfCollision()) {
                 isDone = true;
             }
         }
@@ -229,11 +263,11 @@ public class GameLoopScene extends Snake3DScene {
     private void renderObjects() {
         modelBatch.begin(cam);
 
-        for (final GameObject instance : snakeSegments()) {
+        for (final ModelInstance instance : snakeSegments()) {
             modelBatch.render(instance, environment);
         }
 
-        for (final GameObject instance : getPlaneSegments()) {
+        for (final ModelInstance instance : getPlaneSegments()) {
             modelBatch.render(instance, environment);
         }
 
@@ -246,11 +280,11 @@ public class GameLoopScene extends Snake3DScene {
         shadowLight.begin(Vector3.Zero, cam.direction);
         shadowBatch.begin(shadowLight.getCamera());
 
-        for (final GameObject instance : snakeSegments()) {
+        for (final ModelInstance instance : snakeSegments()) {
             shadowBatch.render(instance);
         }
 
-        for (final GameObject instance : getPlaneSegments()) {
+        for (final ModelInstance instance : getPlaneSegments()) {
             shadowBatch.render(instance);
         }
         shadowBatch.render(appleInstance);
@@ -264,7 +298,7 @@ public class GameLoopScene extends Snake3DScene {
 
         snakeSegments.get(0).transform.getTranslation(snakeHeadPosition);
 
-        rotateCameraAround(snakeHeadPosition, snake3d.camera().getAngle());
+        rotateCameraAround(snakeHeadPosition, camera().getAngle());
     }
 
     private void rotateCameraAround(Vector3 position, float angle) {
@@ -279,11 +313,11 @@ public class GameLoopScene extends Snake3DScene {
         isDone = true;
     }
 
-    public ArrayList<GameObject> snakeSegments() {
+    public ArrayList<ModelInstance> snakeSegments() {
         return snakeSegments;
     }
 
-    public ArrayList<GameObject> getPlaneSegments() {
+    public ArrayList<ModelInstance> getPlaneSegments() {
         return planeSegments;
     }
 }

@@ -49,14 +49,21 @@ public class ScoreBoard {
     public void increaseScore() {
         score++;
     }
+    
+    /**
+     * Sets the score to zero
+     */
+    public void clearScore() {
+        score = 0;
+    }
 
     /**
      * A method to return the saved scores from a file
      *
      * @return List of saved scores
      */
-    public Map<String, Integer> getSavedScores() {
-        Map<String, Integer> savedScores = new HashMap<>();
+    public Map<Long, Integer> getSavedScores() {
+        Map<Long, Integer> savedScores = new HashMap<>();
 
         File file = new File(storedScoresDirectoryPath + storedScoresFilePath);
 
@@ -81,13 +88,8 @@ public class ScoreBoard {
 
                     long rowTimestamp = Long.parseLong(splitted_row[0]);
                     Integer rowScore = Integer.parseInt(splitted_row[1]);
-
-                    Date date = new Date(rowTimestamp * 1000L);
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd.MM. HH:mm:ss");
-                    sdf.setTimeZone(TimeZone.getTimeZone("Europe/Helsinki"));
-                    String formattedDate = sdf.format(date);
-
-                    savedScores.put(formattedDate, rowScore);
+                    
+                    savedScores.put(rowTimestamp, rowScore);
                 }
             } catch (FileNotFoundException e) {
 
@@ -140,5 +142,20 @@ public class ScoreBoard {
         }
 
         return true;
+    }
+
+    /**
+     * Formats Unix timestamp to readable date
+     * @param unixTimestamp Timestamp in Unix format
+     * @return Formatted date
+     */
+    public String formatTimestamp(Long unixTimestamp) {
+        Date date = new Date(unixTimestamp * 1000L);
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM. HH:mm:ss");
+        
+        sdf.setTimeZone(TimeZone.getTimeZone("Europe/Helsinki"));
+        
+        return sdf.format(date);
     }
 }

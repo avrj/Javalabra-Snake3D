@@ -20,10 +20,14 @@ import static org.junit.Assert.*;
  */
 public class ScoreBoardTest {
 
-    private ScoreBoard scoreBoard;
+    private final ScoreBoard scoreBoard;
+    private final File scoresFilePath, scoresDirectoryPath;
 
     public ScoreBoardTest() {
         scoreBoard = new ScoreBoard();
+
+        scoresFilePath = new File("savedScores/scores.txt");
+        scoresDirectoryPath = new File("savedScores");
     }
 
     @BeforeClass
@@ -60,8 +64,6 @@ public class ScoreBoardTest {
         scoreBoard.increaseScore();
         scoreBoard.increaseScore();
 
-        File scoresFilePath = new File("savedScores/scores.txt");
-        File scoresDirectoryPath = new File("savedScores");
         scoresDirectoryPath.mkdir();
 
         assertTrue(scoreBoard.saveScore());
@@ -72,9 +74,6 @@ public class ScoreBoardTest {
 
     @Test
     public void scoreIsSavedIfDirectoryNotExists() {
-        File scoresFilePath = new File("savedScores/scores.txt");
-        File scoresDirectoryPath = new File("savedScores");
-
         scoresFilePath.delete();
         scoresDirectoryPath.delete();
 
@@ -90,9 +89,8 @@ public class ScoreBoardTest {
         scoreBoard.increaseScore();
         scoreBoard.increaseScore();
         scoreBoard.increaseScore();
-        File scoresDirectoryPath = new File("savedScores");
+
         scoresDirectoryPath.mkdir();
-        File scoresFilePath = new File("savedScores/scores.txt");
 
         try {
             scoresFilePath.createNewFile();
@@ -107,9 +105,7 @@ public class ScoreBoardTest {
 
     @Test
     public void scoreIsSavedIfFileNotExists() {
-        File scoresDirectoryPath = new File("savedScores");
         scoresDirectoryPath.mkdir();
-        File scoresFilePath = new File("savedScores/scores.txt");
 
         scoresFilePath.delete();
 
@@ -122,9 +118,7 @@ public class ScoreBoardTest {
 
     @Test
     public void getSavedScoresIfFileNotExists() {
-        File scoresDirectoryPath = new File("savedScores");
         scoresDirectoryPath.mkdir();
-        File scoresFilePath = new File("savedScores/scores.txt");
 
         scoresFilePath.delete();
         scoreBoard.increaseScore();
@@ -136,9 +130,7 @@ public class ScoreBoardTest {
 
     @Test
     public void getSavedScoresIfFileExists() {
-        File scoresDirectoryPath = new File("savedScores");
         scoresDirectoryPath.mkdir();
-        File scoresFilePath = new File("savedScores/scores.txt");
 
         try {
             scoresFilePath.createNewFile();
@@ -155,8 +147,6 @@ public class ScoreBoardTest {
 
     @Test
     public void savedScoresAreReturned() {
-        File scoresFilePath = new File("savedScores/scores.txt");
-
         scoresFilePath.delete();
 
         try {
@@ -168,13 +158,28 @@ public class ScoreBoardTest {
         scoreBoard.increaseScore();
         scoreBoard.increaseScore();
         scoreBoard.saveScore();
+
         assertEquals(1, scoreBoard.getSavedScores().size());
 
         scoreBoard.increaseScore();
         scoreBoard.increaseScore();
+        
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+
         scoreBoard.saveScore();
+
         System.out.println(scoreBoard.getSavedScores());
+
         assertEquals(2, scoreBoard.getSavedScores().size());
 
+    }
+    
+    @Test
+    public void unixTimestampIsFormattedCorrectly() {
+        assertEquals(scoreBoard.formatTimestamp(1424425550L), "20.02. 11:45:50");
     }
 }

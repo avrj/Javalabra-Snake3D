@@ -35,42 +35,42 @@ public class GameLoopKeyListener extends InputAdapter {
         switch (keyCode) {
             case Input.Keys.LEFT:
                 if (tempDirection.equals(SnakeDirection.UP)) {
-                    snake3d.snake().setDirection(SnakeDirection.LEFT);
+                    snake3d.gameLoopScene.snake().setDirection(SnakeDirection.LEFT);
                     tempDirection = SnakeDirection.LEFT;
-                    snake3d.camera().setAngle(0);
+                    snake3d.gameLoopScene.camera().setAngle(0);
                 } else if (tempDirection.equals(SnakeDirection.LEFT)) {
-                    snake3d.snake().setDirection(SnakeDirection.DOWN);
+                    snake3d.gameLoopScene.snake().setDirection(SnakeDirection.DOWN);
                     tempDirection = SnakeDirection.DOWN;
-                    snake3d.camera().setAngle(90);
+                    snake3d.gameLoopScene.camera().setAngle(90);
                 } else if (tempDirection.equals(SnakeDirection.DOWN)) {
-                    snake3d.snake().setDirection(SnakeDirection.RIGHT);
+                    snake3d.gameLoopScene.snake().setDirection(SnakeDirection.RIGHT);
                     tempDirection = SnakeDirection.RIGHT;
-                    snake3d.camera().setAngle(180);
+                    snake3d.gameLoopScene.camera().setAngle(180);
                 } else if (tempDirection.equals(SnakeDirection.RIGHT)) {
-                    snake3d.snake().setDirection(SnakeDirection.UP);
+                    snake3d.gameLoopScene.snake().setDirection(SnakeDirection.UP);
                     tempDirection = SnakeDirection.UP;
-                    snake3d.camera().setAngle(270);
+                    snake3d.gameLoopScene.camera().setAngle(270);
                 }
 
                 return true;
             case Input.Keys.RIGHT:
                 if (tempDirection.equals(SnakeDirection.UP)) {
-                    snake3d.snake().setDirection(SnakeDirection.RIGHT);
+                    snake3d.gameLoopScene.snake().setDirection(SnakeDirection.RIGHT);
                     tempDirection = SnakeDirection.RIGHT;
 
-                    snake3d.camera().setAngle(-180);
+                    snake3d.gameLoopScene.camera().setAngle(-180);
                 } else if (tempDirection.equals(SnakeDirection.LEFT)) {
-                    snake3d.snake().setDirection(SnakeDirection.UP);
+                    snake3d.gameLoopScene.snake().setDirection(SnakeDirection.UP);
                     tempDirection = SnakeDirection.UP;
-                    snake3d.camera().setAngle(-90);
+                    snake3d.gameLoopScene.camera().setAngle(-90);
                 } else if (tempDirection.equals(SnakeDirection.DOWN)) {
-                    snake3d.snake().setDirection(SnakeDirection.LEFT);
+                    snake3d.gameLoopScene.snake().setDirection(SnakeDirection.LEFT);
                     tempDirection = SnakeDirection.LEFT;
-                    snake3d.camera().setAngle(0);
+                    snake3d.gameLoopScene.camera().setAngle(0);
                 } else if (tempDirection.equals(SnakeDirection.RIGHT)) {
-                    snake3d.snake().setDirection(SnakeDirection.DOWN);
+                    snake3d.gameLoopScene.snake().setDirection(SnakeDirection.DOWN);
                     tempDirection = SnakeDirection.DOWN;
-                    snake3d.camera().setAngle(90);
+                    snake3d.gameLoopScene.camera().setAngle(90);
                 }
 
                 return true;

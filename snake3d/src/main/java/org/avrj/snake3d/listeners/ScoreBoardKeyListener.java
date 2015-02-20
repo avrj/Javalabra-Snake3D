@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputAdapter;
 import org.avrj.snake3d.Snake3D;
 import org.avrj.snake3d.helpers.GameState;
 import org.avrj.snake3d.helpers.SnakeDirection;
+import org.avrj.snake3d.scenes.MainMenuScene;
 
 /**
  * Listens keyboard events in ScoreBoardScene
@@ -32,7 +33,7 @@ public class ScoreBoardKeyListener extends InputAdapter {
     @Override
     public boolean keyDown(int keyCode) {
         if (keyCode == Input.Keys.ESCAPE) {
-            snake3d.setScene(snake3d.mainMenuScene, new MainMenuKeyListener(snake3d));
+            snake3d.setScene(new MainMenuScene(snake3d), new MainMenuKeyListener(snake3d));
 
             return true;
         }

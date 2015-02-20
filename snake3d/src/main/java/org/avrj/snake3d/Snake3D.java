@@ -21,11 +21,6 @@ import org.avrj.snake3d.scenes.MainMenuScene;
 import org.avrj.snake3d.scenes.ScoreBoardScene;
 
 public class Snake3D extends Game {
-
-    private Apple apple;
-    private Snake snake;
-    private Camera camera;
-    private GameSurface gameSurface;
     private ScoreBoard scoreBoard;
     private GameState gameState;
 
@@ -34,23 +29,7 @@ public class Snake3D extends Game {
     private InputProcessor currentInputProcessor;
 
     public ScoreBoardScene scoreBoardScene;
-    public MainMenuScene mainMenuScene;
-
-    public Apple apple() {
-        return apple;
-    }
-
-    public Snake snake() {
-        return snake;
-    }
-
-    public Camera camera() {
-        return camera;
-    }
-
-    public GameSurface gameSurface() {
-        return gameSurface;
-    }
+    public GameLoopScene gameLoopScene;
 
     public ScoreBoard scoreBoard() {
         return scoreBoard;
@@ -83,7 +62,7 @@ public class Snake3D extends Game {
             }
 
             if (currentScreen instanceof MainMenuScene) {
-                setScene(new GameLoopScene(this), new GameLoopKeyListener(this));
+                setScene(gameLoopScene = new GameLoopScene(this), new GameLoopKeyListener(this));
             } else if (currentScreen instanceof ScoreBoardScene) {
                 setScene(new ScoreBoardScene(this), new ScoreBoardKeyListener(this));
             } else {
@@ -103,17 +82,13 @@ public class Snake3D extends Game {
 
     @Override
     public void create() {
-        apple = new Apple();
-        snake = new Snake();
-        camera = new Camera();
-        gameSurface = new GameSurface();
         scoreBoard = new ScoreBoard();
-        gameState = GameState.Paused;
+        
         scoreBoardScene = new ScoreBoardScene(this);
-        mainMenuScene = new MainMenuScene(this);
-
-        apple.moveAppleToRandomPosition(gameSurface.getVectors(), snake.getVectors());
-
+        
+        gameState = GameState.Paused;
+        
+        
         Gdx.input.setInputProcessor(inputMultiplexer);
 
         inputMultiplexer.addProcessor(new CommonKeyListener());
