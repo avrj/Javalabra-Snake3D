@@ -3,6 +3,7 @@ package org.avrj.snake3d.listeners;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import org.avrj.snake3d.Snake3D;
+import org.avrj.snake3d.scenes.ScoreBoardScene;
 
 /**
  * Listens the keyboard events in MainMenuScene
@@ -29,13 +30,20 @@ public class MainMenuKeyListener extends InputAdapter {
     @Override
     public boolean keyDown(int keyCode) {
         if (keyCode == Input.Keys.SPACE) {
-            snake3d.getScreen().setDone();
             snake3d.getInputMultiplexer().removeProcessor(this);
+            
+            snake3d.getScreen().setDone();
 
             return true;
-        }
-        if (keyCode == Input.Keys.S) {
-            snake3d.setScene(snake3d.scoreBoardScene, new ScoreBoardKeyListener(snake3d));
+        } else if (keyCode == Input.Keys.S) {
+            snake3d.setScene(new ScoreBoardScene(snake3d), new ScoreBoardKeyListener(snake3d));
+            
+            return true;
+        } else if (keyCode == Input.Keys.SPACE) {
+            snake3d.getInputMultiplexer().removeProcessor(this);
+
+            snake3d.getScreen().setDone();
+
             return true;
         }
         return false;

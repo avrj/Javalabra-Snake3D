@@ -1,27 +1,26 @@
 package org.avrj.snake3d.logic;
 
+import com.sun.xml.internal.ws.util.StringUtils;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
+import java.util.Map.Entry;
+import java.util.NavigableMap;
 import java.util.TimeZone;
+import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.avrj.snake3d.helpers.ScoreBoardItem;
 
 /**
  * A scoreboard that keeps track of points earned
@@ -32,11 +31,13 @@ public class ScoreBoard {
 
     private final String storedScoresDirectoryPath = "savedScores/";
     private final String storedScoresFilePath = "scores.txt";
+    private File file, dir;
 
     private int score = 0;
 
     public ScoreBoard() {
-
+        dir = new File(storedScoresDirectoryPath);
+        file = new File(storedScoresDirectoryPath + storedScoresFilePath);
     }
 
     public int getScore() {
@@ -49,7 +50,7 @@ public class ScoreBoard {
     public void increaseScore() {
         score++;
     }
-    
+
     /**
      * Sets the score to zero
      */
@@ -62,20 +63,32 @@ public class ScoreBoard {
      *
      * @return List of saved scores
      */
-    public Map<Long, Integer> getSavedScores() {
-        Map<Long, Integer> savedScores = new HashMap<>();
+    public ArrayList<ScoreBoardItem> getSavedScores() {
+        BufferedReader bufferedReader = createReader(storedScoresDirectoryPath + storedScoresFilePath);
 
-        File file = new File(storedScoresDirectoryPath + storedScoresFilePath);
+        if (bufferedReader == null) {
+            return new ArrayList<>();
+        }
 
-        if (file.isFile()) {
-            BufferedReader in = null;
+        return createScoresList(bufferedReader);
+    }
+
+    private BufferedReader createReader(String fileName) {
+        try {
+            return new BufferedReader(new FileReader(fileName));
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    private ArrayList<ScoreBoardItem> createScoresList(BufferedReader br) {
+        ArrayList<ScoreBoardItem> savedScores = new ArrayList<>();
+
+        try {
+            String row;
 
             try {
-                in = new BufferedReader(new FileReader(file));
-
-                String row;
-
-                while ((row = in.readLine()) != null) {
+                while ((row = br.readLine()) != null) {
                     if (savedScores.size() == 10) {
                         break;
                     }
@@ -88,23 +101,20 @@ public class ScoreBoard {
 
                     long rowTimestamp = Long.parseLong(splitted_row[0]);
                     Integer rowScore = Integer.parseInt(splitted_row[1]);
-                    
-                    savedScores.put(rowTimestamp, rowScore);
+
+                    savedScores.add(new ScoreBoardItem(rowTimestamp, rowScore));
                 }
-            } catch (FileNotFoundException e) {
+            } catch (IOException ex) {
 
-            } catch (IOException e) {
+            }
+        } finally {
+            try {
+                br.close();
+            } catch (IOException ex) {
 
-            } finally {
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException e) {
-
-                    }
-                }
             }
         }
+
         return savedScores;
     }
 
@@ -114,9 +124,53 @@ public class ScoreBoard {
      * @return true if score is saved
      */
     public boolean saveScore() {
-        File dir = new File(storedScoresDirectoryPath);
-        File file = new File(storedScoresDirectoryPath + storedScoresFilePath);
+        ArrayList<ScoreBoardItem> savedScores = getSavedScores();
 
+        if (savedScores.size() == 10) {
+            savedScores.remove(savedScores.size() - 1);
+        }
+
+        long currentTimestamp = System.currentTimeMillis() / 1000L;
+
+        savedScores.add(0, new ScoreBoardItem(currentTimestamp, score));
+
+        if (!createDirIfNotExists(dir)) {
+            return false;
+        }
+
+        if (!createFileIfNotExists(file)) {
+            return false;
+        }
+
+        if(!clearFile(file)) {
+            return false;
+        }
+        
+        try (PrintWriter printWriter = new PrintWriter(new FileOutputStream(file, true))) {
+            for (ScoreBoardItem scoreBoardItem : savedScores) {
+                printWriter.println(scoreBoardItem.getTimestamp() + "|" + scoreBoardItem.getScore());
+            }
+        } catch (IOException e) {
+            return false;
+        }
+        
+
+        return true;
+    }
+
+    private boolean clearFile(File fileImport) {
+        FileInputStream fileStream = null;
+        
+        try(PrintWriter writer = new PrintWriter(fileImport)) {
+            writer.print("");
+        } catch (Exception ex) {
+            return false;
+        }
+        
+        return true;
+    }
+
+    private boolean createDirIfNotExists(File dir) {
         if (dir.exists()) {
             if (!dir.isDirectory()) {
                 return false;
@@ -125,6 +179,10 @@ public class ScoreBoard {
             dir.mkdir();
         }
 
+        return true;
+    }
+
+    private boolean createFileIfNotExists(File file) {
         if (!file.isFile()) {
             try {
                 file.createNewFile();
@@ -133,29 +191,22 @@ public class ScoreBoard {
             }
         }
 
-        long currentTimestamp = System.currentTimeMillis() / 1000L;
-
-        try (PrintWriter printWriter = new PrintWriter(new FileOutputStream(file, true))) {
-            printWriter.println(currentTimestamp + "|" + score);
-        } catch (IOException e) {
-            return false;
-        }
-
         return true;
     }
 
     /**
      * Formats Unix timestamp to readable date
+     *
      * @param unixTimestamp Timestamp in Unix format
      * @return Formatted date
      */
     public String formatTimestamp(Long unixTimestamp) {
         Date date = new Date(unixTimestamp * 1000L);
-        
+
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM. HH:mm:ss");
-        
+
         sdf.setTimeZone(TimeZone.getTimeZone("Europe/Helsinki"));
-        
+
         return sdf.format(date);
     }
 }

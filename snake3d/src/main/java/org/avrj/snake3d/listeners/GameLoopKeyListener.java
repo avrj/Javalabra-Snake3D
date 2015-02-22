@@ -22,7 +22,6 @@ public class GameLoopKeyListener extends InputAdapter {
     public GameLoopKeyListener(Snake3D snake3d) {
         this.snake3d = snake3d;
     }
-    private SnakeDirection tempDirection = SnakeDirection.UP;
 
     /**
      * Overrides the keyDown method
@@ -32,57 +31,66 @@ public class GameLoopKeyListener extends InputAdapter {
      */
     @Override
     public boolean keyDown(int keyCode) {
-        switch (keyCode) {
-            case Input.Keys.LEFT:
-                if (tempDirection.equals(SnakeDirection.UP)) {
+        if (keyCode == Input.Keys.LEFT) {
+            switch (snake3d.gameLoopScene.snake().getDirection()) {
+                case UP:
                     snake3d.gameLoopScene.snake().setDirection(SnakeDirection.LEFT);
-                    tempDirection = SnakeDirection.LEFT;
-                    snake3d.gameLoopScene.camera().setAngle(0);
-                } else if (tempDirection.equals(SnakeDirection.LEFT)) {
-                    snake3d.gameLoopScene.snake().setDirection(SnakeDirection.DOWN);
-                    tempDirection = SnakeDirection.DOWN;
-                    snake3d.gameLoopScene.camera().setAngle(90);
-                } else if (tempDirection.equals(SnakeDirection.DOWN)) {
-                    snake3d.gameLoopScene.snake().setDirection(SnakeDirection.RIGHT);
-                    tempDirection = SnakeDirection.RIGHT;
-                    snake3d.gameLoopScene.camera().setAngle(180);
-                } else if (tempDirection.equals(SnakeDirection.RIGHT)) {
-                    snake3d.gameLoopScene.snake().setDirection(SnakeDirection.UP);
-                    tempDirection = SnakeDirection.UP;
-                    snake3d.gameLoopScene.camera().setAngle(270);
-                }
 
-                return true;
-            case Input.Keys.RIGHT:
-                if (tempDirection.equals(SnakeDirection.UP)) {
+                    snake3d.gameLoopScene.camera().setAngle(0);
+                    break;
+                case LEFT:
+                    snake3d.gameLoopScene.snake().setDirection(SnakeDirection.DOWN);
+
+                    snake3d.gameLoopScene.camera().setAngle(90);
+                    break;
+                case DOWN:
                     snake3d.gameLoopScene.snake().setDirection(SnakeDirection.RIGHT);
-                    tempDirection = SnakeDirection.RIGHT;
+
+                    snake3d.gameLoopScene.camera().setAngle(180);
+                    break;
+                case RIGHT:
+                    snake3d.gameLoopScene.snake().setDirection(SnakeDirection.UP);
+
+                    snake3d.gameLoopScene.camera().setAngle(270);
+                    break;
+            }
+
+            return true;
+        } else if (keyCode == Input.Keys.RIGHT) {
+            switch (snake3d.gameLoopScene.snake().getDirection()) {
+                case UP:
+                    snake3d.gameLoopScene.snake().setDirection(SnakeDirection.RIGHT);
 
                     snake3d.gameLoopScene.camera().setAngle(-180);
-                } else if (tempDirection.equals(SnakeDirection.LEFT)) {
+                    break;
+                case LEFT:
                     snake3d.gameLoopScene.snake().setDirection(SnakeDirection.UP);
-                    tempDirection = SnakeDirection.UP;
+
                     snake3d.gameLoopScene.camera().setAngle(-90);
-                } else if (tempDirection.equals(SnakeDirection.DOWN)) {
+                    break;
+                case DOWN:
                     snake3d.gameLoopScene.snake().setDirection(SnakeDirection.LEFT);
-                    tempDirection = SnakeDirection.LEFT;
+
                     snake3d.gameLoopScene.camera().setAngle(0);
-                } else if (tempDirection.equals(SnakeDirection.RIGHT)) {
+                    break;
+                case RIGHT:
                     snake3d.gameLoopScene.snake().setDirection(SnakeDirection.DOWN);
-                    tempDirection = SnakeDirection.DOWN;
+
                     snake3d.gameLoopScene.camera().setAngle(90);
-                }
+                    break;
+            }
 
-                return true;
-            case Input.Keys.ESCAPE:
-                if (snake3d.getGameState().equals(GameState.Running)) {
-                    snake3d.setGameState(GameState.Paused);
-                } else {
-                    snake3d.setGameState(GameState.Running);
-                }
+            return true;
+        } else if (keyCode == Input.Keys.ESCAPE) {
+            if (snake3d.getGameState().equals(GameState.Running)) {
+                snake3d.setGameState(GameState.Paused);
+            } else {
+                snake3d.setGameState(GameState.Running);
+            }
 
-                return true;
+            return true;
         }
+
         return false;
     }
 }

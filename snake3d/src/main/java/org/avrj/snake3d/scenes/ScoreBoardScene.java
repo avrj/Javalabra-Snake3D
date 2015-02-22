@@ -11,25 +11,25 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import java.util.ArrayList;
 import java.util.Map;
 import org.avrj.snake3d.Snake3D;
-import org.avrj.snake3d.listeners.MainMenuKeyListener;
+import org.avrj.snake3d.helpers.ScoreBoardItem;
 import org.avrj.snake3d.listeners.ScoreBoardKeyListener;
 
 public class ScoreBoardScene extends Snake3DScene {
 
     private boolean isDone = false;
     private final Stage stage;
-    private BitmapFont titleFont, scoreFont, fullScreenFont;
-    private Label titleLabel, fullScreenLabel;
+    private BitmapFont titleFont, scoreFont, returnToMainMenuFont;
+    private Label titleLabel, returnToMainMenuLabel;
     private ArrayList<Label> scoreLabels;
     private final StringBuilder stringBuilder;
-    private String titleText, fullScreenText;
+    private String titleText, returnToMainMenuText;
     private ArrayList<String> scoreTexts;
 
     public ScoreBoardScene(Snake3D snake3d) {
         super(snake3d);
 
         titleText = "Latest scores";
-        fullScreenText = "[ESC] to return to main menu";
+        returnToMainMenuText = "[ESC] to return to main menu";
 
         stage = new Stage();
         stringBuilder = new StringBuilder();
@@ -47,9 +47,9 @@ public class ScoreBoardScene extends Snake3DScene {
         titleLabel.setPosition(stage.getWidth() / 2 - (titleFont.getBounds(titleText).width / 2), stage.getHeight() - 100);
 
         int y = 0;
-        for (Map.Entry<Long, Integer> entry : snake3d.scoreBoard().getSavedScores().entrySet()) {
-            String timestamp = snake3d.scoreBoard().formatTimestamp(entry.getKey());
-            Integer score = entry.getValue();
+        for(ScoreBoardItem scoreBoardItem : snake3d.scoreBoard().getSavedScores()) {
+            String timestamp = snake3d.scoreBoard().formatTimestamp(scoreBoardItem.getTimestamp());
+            Integer score = scoreBoardItem.getScore();
 
             Label scoreLabel = new Label(" ", new Label.LabelStyle(scoreFont, Color.WHITE));
             scoreLabel.setPosition(stage.getWidth() / 2 - (scoreFont.getBounds(timestamp + " " + score + " points").width / 2), stage.getHeight() - (160 + (35 * y)));
@@ -58,8 +58,8 @@ public class ScoreBoardScene extends Snake3DScene {
             y++;
         }
 
-        fullScreenLabel = new Label(" ", new Label.LabelStyle(fullScreenFont, Color.WHITE));
-        fullScreenLabel.setPosition(stage.getWidth() / 2 - (fullScreenFont.getBounds(fullScreenText).width / 2), stage.getHeight() / 2 - 170);
+        returnToMainMenuLabel = new Label(" ", new Label.LabelStyle(returnToMainMenuFont, Color.WHITE));
+        returnToMainMenuLabel.setPosition(stage.getWidth() / 2 - (returnToMainMenuFont.getBounds(returnToMainMenuText).width / 2), 100);
 
         stage.addActor(titleLabel);
 
@@ -67,7 +67,7 @@ public class ScoreBoardScene extends Snake3DScene {
             stage.addActor(scoreLabel);
         }
 
-        stage.addActor(fullScreenLabel);
+        stage.addActor(returnToMainMenuLabel);
 
     }
 
@@ -75,7 +75,7 @@ public class ScoreBoardScene extends Snake3DScene {
     public void dispose() {
         titleFont.dispose();
         scoreFont.dispose();
-        fullScreenFont.dispose();
+        returnToMainMenuFont.dispose();
         stage.dispose();
     }
 
@@ -90,7 +90,7 @@ public class ScoreBoardScene extends Snake3DScene {
         scoreFont = generator.generateFont(parameter);
 
         parameter.size = 20;
-        fullScreenFont = generator.generateFont(parameter);
+        returnToMainMenuFont = generator.generateFont(parameter);
 
         generator.dispose();
     }
@@ -121,9 +121,10 @@ public class ScoreBoardScene extends Snake3DScene {
 
     private void showScoreLabels() {
         int i = 0;
-        for (Map.Entry<Long, Integer> entry : snake3d.scoreBoard().getSavedScores().entrySet()) {
-            String timestamp = snake3d.scoreBoard().formatTimestamp(entry.getKey());
-            Integer score = entry.getValue();
+        for(ScoreBoardItem scoreBoardItem : snake3d.scoreBoard().getSavedScores()) {
+            String timestamp = snake3d.scoreBoard().formatTimestamp(scoreBoardItem.getTimestamp());
+            Integer score = scoreBoardItem.getScore();
+
 
             stringBuilder.setLength(0);
             stringBuilder.append(timestamp).append(" ").append(score).append(" points");
@@ -136,9 +137,9 @@ public class ScoreBoardScene extends Snake3DScene {
 
     public void showToggleFullscreenLabel() {
         stringBuilder.setLength(0);
-        stringBuilder.append(fullScreenText);
+        stringBuilder.append(returnToMainMenuText);
 
-        fullScreenLabel.setText(stringBuilder);
+        returnToMainMenuLabel.setText(stringBuilder);
     }
 
     @Override

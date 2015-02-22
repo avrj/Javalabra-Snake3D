@@ -45,10 +45,10 @@ public class MainMenuScene extends Snake3DScene {
         startGameLabel.setPosition(stage.getWidth() / 2 - (startGameFont.getBounds(startGameText).width / 2), stage.getHeight() / 2 - 100);
 
         fullScreenLabel = new Label(" ", new Label.LabelStyle(fullScreenFont, Color.WHITE));
-        fullScreenLabel.setPosition(stage.getWidth() / 2 - (fullScreenFont.getBounds(fullScreenText).width / 2), stage.getHeight() / 2 - 170);
+        fullScreenLabel.setPosition(stage.getWidth() / 2 - (fullScreenFont.getBounds(fullScreenText).width / 2), 100);
 
         viewScoreBoardLabel = new Label(" ", new Label.LabelStyle(viewScoreBoardFont, Color.WHITE));
-        viewScoreBoardLabel.setPosition(stage.getWidth() / 2 - (viewScoreBoardFont.getBounds(viewScoreBoardText).width / 2), 100);
+        viewScoreBoardLabel.setPosition(stage.getWidth() / 2 - (viewScoreBoardFont.getBounds(viewScoreBoardText).width / 2), stage.getHeight() / 2 - 170);
 
         stage.addActor(titleLabel);
         stage.addActor(startGameLabel);

@@ -12,6 +12,7 @@ public class Camera {
     private float defaultAngle = -90;
     private float angle = defaultAngle;
     private float angleStep = 5;
+    private boolean shouldRotate = false;
 
     public Camera() {
 
@@ -23,5 +24,7 @@ public class Camera {
 
     public void setAngle(float angle) {
         this.angle = angle;
+        
+        shouldRotate = true;
     }
 }

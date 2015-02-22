@@ -31,15 +31,15 @@ public class GameOverKeyListener extends InputAdapter {
     @Override
     public boolean keyDown(int keyCode) {
         if (keyCode == Input.Keys.ESCAPE) {
-            Gdx.app.exit();
             snake3d.getInputMultiplexer().removeProcessor(this);
+
+            Gdx.app.exit();
 
             return true;
-        }
-
-        if (keyCode == Input.Keys.SPACE) {
-            snake3d.getScreen().setDone();
+        } else if (keyCode == Input.Keys.SPACE) {
             snake3d.getInputMultiplexer().removeProcessor(this);
+
+            snake3d.getScreen().setDone();
 
             return true;
         }

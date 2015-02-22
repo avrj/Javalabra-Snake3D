@@ -38,20 +38,20 @@ public class GameLoopScene extends Snake3DScene {
     private Model snakeModel;
     private Model planeModel;
 
-    private ModelInstance appleInstance;
     private ModelBuilder modelBuilder;
-    private final Environment environment;
-    private final PerspectiveCamera cam;
     private CameraInputController camController;
-    private final ModelBatch modelBatch;
     private ModelInstance snakeInstance;
     private ModelInstance planeInstance;
+    private ModelInstance appleInstance;
 
+    private final ModelBatch modelBatch;
+    private final ModelBatch shadowBatch;
+    private final Environment environment;
+    private final PerspectiveCamera cam;
     private final Stage stage;
     private final Label fpsLabel, scoreLabel;
     private final BitmapFont font;
     private final StringBuilder stringBuilder;
-    private final ModelBatch shadowBatch;
     private final DirectionalShadowLight shadowLight;
 
     private float timer = 0f;
@@ -66,7 +66,7 @@ public class GameLoopScene extends Snake3DScene {
 
     public GameLoopScene(Snake3D snake3d) {
         super(snake3d);
-        
+
         snake3d.scoreBoard().clearScore();
 
         apple = new Apple();
@@ -224,7 +224,7 @@ public class GameLoopScene extends Snake3DScene {
         gl.glEnable(GL20.GL_DEPTH_TEST);
         gl.glEnable(GL20.GL_CULL_FACE);
 
-        setCamera();
+        updateCameraRotation();
 
         renderShadows();
 
@@ -293,7 +293,7 @@ public class GameLoopScene extends Snake3DScene {
         shadowLight.end();
     }
 
-    private void setCamera() {
+    private void updateCameraRotation() {
         Vector3 snakeHeadPosition = new Vector3();
 
         snakeSegments.get(0).transform.getTranslation(snakeHeadPosition);

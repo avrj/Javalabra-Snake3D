@@ -9,11 +9,7 @@ import org.avrj.snake3d.listeners.CommonKeyListener;
 import org.avrj.snake3d.listeners.GameLoopKeyListener;
 import org.avrj.snake3d.listeners.GameOverKeyListener;
 import org.avrj.snake3d.listeners.ScoreBoardKeyListener;
-import org.avrj.snake3d.logic.Apple;
-import org.avrj.snake3d.logic.Camera;
-import org.avrj.snake3d.logic.GameSurface;
 import org.avrj.snake3d.logic.ScoreBoard;
-import org.avrj.snake3d.logic.Snake;
 import org.avrj.snake3d.scenes.Snake3DScene;
 import org.avrj.snake3d.scenes.GameLoopScene;
 import org.avrj.snake3d.scenes.GameOverScene;
@@ -21,26 +17,29 @@ import org.avrj.snake3d.scenes.MainMenuScene;
 import org.avrj.snake3d.scenes.ScoreBoardScene;
 
 public class Snake3D extends Game {
+
     private ScoreBoard scoreBoard;
     private GameState gameState;
 
-    private final InputMultiplexer inputMultiplexer = new InputMultiplexer();
+    private InputMultiplexer inputMultiplexer;
 
     private InputProcessor currentInputProcessor;
 
-    public ScoreBoardScene scoreBoardScene;
     public GameLoopScene gameLoopScene;
+    
+    @Override
+    public void create() {
+        inputMultiplexer = new InputMultiplexer();
+        
+        scoreBoard = new ScoreBoard();
 
-    public ScoreBoard scoreBoard() {
-        return scoreBoard;
-    }
+        gameState = GameState.Paused;
 
-    public GameState getGameState() {
-        return gameState;
-    }
+        Gdx.input.setInputProcessor(inputMultiplexer);
 
-    public void setGameState(GameState gameState) {
-        this.gameState = gameState;
+        inputMultiplexer.addProcessor(new CommonKeyListener());
+
+        setScene(new MainMenuScene(this), null);
     }
 
     @Override
@@ -55,12 +54,6 @@ public class Snake3D extends Game {
 
     private void handleSceneChanges(Snake3DScene currentScreen) {
         if (currentScreen.isDone()) {
-            currentScreen.dispose();
-
-            if (currentInputProcessor != null) {
-                inputMultiplexer.removeProcessor(currentInputProcessor);
-            }
-
             if (currentScreen instanceof MainMenuScene) {
                 setScene(gameLoopScene = new GameLoopScene(this), new GameLoopKeyListener(this));
             } else if (currentScreen instanceof ScoreBoardScene) {
@@ -80,25 +73,23 @@ public class Snake3D extends Game {
         return (Snake3DScene) super.getScreen();
     }
 
-    @Override
-    public void create() {
-        scoreBoard = new ScoreBoard();
-        
-        scoreBoardScene = new ScoreBoardScene(this);
-        
-        gameState = GameState.Paused;
-        
-        
-        Gdx.input.setInputProcessor(inputMultiplexer);
-
-        inputMultiplexer.addProcessor(new CommonKeyListener());
-
-        setScene(new MainMenuScene(this), null);
-    }
-
     public void setScene(Snake3DScene scene, InputProcessor inputProcessor) {
+        Snake3DScene currentScreen = getScreen();
+
+        if (currentScreen != null) {
+            currentScreen.dispose();
+        }
+
+        if (currentInputProcessor != null) {
+            inputMultiplexer.removeProcessor(currentInputProcessor);
+        }
+
         setScreen(scene);
 
+        setCurrentInputProcessor(inputProcessor);
+    }
+
+    private void setCurrentInputProcessor(InputProcessor inputProcessor) {
         if (inputProcessor != null) {
             currentInputProcessor = inputProcessor;
 
@@ -112,5 +103,17 @@ public class Snake3D extends Game {
 
     public InputMultiplexer getInputMultiplexer() {
         return inputMultiplexer;
+    }
+
+    public ScoreBoard scoreBoard() {
+        return scoreBoard;
+    }
+
+    public GameState getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
     }
 }

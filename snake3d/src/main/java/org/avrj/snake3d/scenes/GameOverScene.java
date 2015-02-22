@@ -51,7 +51,7 @@ public class GameOverScene extends Snake3DScene {
         playAgainGameLabel.setPosition(stage.getWidth() / 2 - (playAgainGameFont.getBounds(playAgainGameText).width / 2), stage.getHeight() / 2 - 150);
 
         exitLabel = new Label(" ", new Label.LabelStyle(exitFont, Color.WHITE));
-        exitLabel.setPosition(stage.getWidth() / 2 - (exitFont.getBounds(exitText).width / 2), stage.getHeight() / 2 - 200);
+        exitLabel.setPosition(stage.getWidth() / 2 - (exitFont.getBounds(exitText).width / 2), 100);
 
         stage.addActor(titleLabel);
         stage.addActor(finalScoreLabel);
