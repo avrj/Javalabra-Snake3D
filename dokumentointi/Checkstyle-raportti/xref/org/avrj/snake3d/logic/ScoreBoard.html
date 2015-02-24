@@ -96,10 +96,10 @@
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>                          <strong class="jxr_keyword">continue</strong>;
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>                      }
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>  
-<a class="jxr_linenumber" name="L91" href="#L91">91</a>                      String[] splitted_row = row.split(<span class="jxr_string">"&#92;&#92;|"</span>);
+<a class="jxr_linenumber" name="L91" href="#L91">91</a>                      String[] splittedRow = row.split(<span class="jxr_string">"&#92;&#92;|"</span>);
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>  
-<a class="jxr_linenumber" name="L93" href="#L93">93</a>                      <strong class="jxr_keyword">long</strong> rowTimestamp = Long.parseLong(splitted_row[0]);
-<a class="jxr_linenumber" name="L94" href="#L94">94</a>                      Integer rowScore = Integer.parseInt(splitted_row[1]);
+<a class="jxr_linenumber" name="L93" href="#L93">93</a>                      <strong class="jxr_keyword">long</strong> rowTimestamp = Long.parseLong(splittedRow[0]);
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>                      Integer rowScore = Integer.parseInt(splittedRow[1]);
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>  
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>                      savedScores.add(<strong class="jxr_keyword">new</strong> <a href="../../../../org/avrj/snake3d/helpers/ScoreBoardItem.html">ScoreBoardItem</a>(rowTimestamp, rowScore));
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>                  }

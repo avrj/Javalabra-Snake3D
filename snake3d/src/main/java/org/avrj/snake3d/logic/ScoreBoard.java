@@ -88,10 +88,10 @@ public class ScoreBoard {
                         continue;
                     }
 
-                    String[] splitted_row = row.split("\\|");
+                    String[] splittedRow = row.split("\\|");
 
-                    long rowTimestamp = Long.parseLong(splitted_row[0]);
-                    Integer rowScore = Integer.parseInt(splitted_row[1]);
+                    long rowTimestamp = Long.parseLong(splittedRow[0]);
+                    Integer rowScore = Integer.parseInt(splittedRow[1]);
 
                     savedScores.add(new ScoreBoardItem(rowTimestamp, rowScore));
                 }
