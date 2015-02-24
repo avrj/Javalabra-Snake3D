@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
  */
 public class GameSurfaceTest {
 
-    private GameSurface gameSurface;
+    private final GameSurface gameSurface;
 
     public GameSurfaceTest() {
         gameSurface = new GameSurface();

@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
  */
 public class SnakeTest {
 
-    private Snake snake;
+    private final Snake snake;
 
     public SnakeTest() {
         snake = new Snake();

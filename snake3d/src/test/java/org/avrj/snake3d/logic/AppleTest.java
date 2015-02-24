@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
  */
 public class AppleTest {
 
-    private Apple apple;
+    private final Apple apple;
 
     public AppleTest() {
         apple = new Apple();

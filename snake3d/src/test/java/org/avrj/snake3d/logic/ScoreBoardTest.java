@@ -40,6 +40,11 @@ public class ScoreBoardTest {
 
     @Before
     public void setUp() {
+        if(scoresFilePath.exists())
+            scoresFilePath.delete();
+        
+        if(scoresDirectoryPath.exists())
+            scoresDirectoryPath.delete();
     }
 
     @After
@@ -74,9 +79,6 @@ public class ScoreBoardTest {
 
     @Test
     public void scoreIsSavedIfDirectoryNotExists() {
-        scoresFilePath.delete();
-        scoresDirectoryPath.delete();
-
         scoreBoard.increaseScore();
         scoreBoard.increaseScore();
         scoreBoard.increaseScore();
@@ -107,8 +109,6 @@ public class ScoreBoardTest {
     public void scoreIsSavedIfFileNotExists() {
         scoresDirectoryPath.mkdir();
 
-        scoresFilePath.delete();
-
         scoreBoard.increaseScore();
         scoreBoard.increaseScore();
         scoreBoard.increaseScore();
@@ -130,9 +130,6 @@ public class ScoreBoardTest {
 
     @Test
     public void getSavedScoresIfFileExists() {
-        scoresFilePath.delete();
-        scoresDirectoryPath.delete();
-        
         scoresDirectoryPath.mkdir();
 
         try {
@@ -147,7 +144,6 @@ public class ScoreBoardTest {
 
         assertTrue(scoreBoard.getSavedScores().isEmpty());
     }
-
     @Test
     public void savedScoresAreReturned() {
         scoresFilePath.delete();
@@ -167,16 +163,8 @@ public class ScoreBoardTest {
         scoreBoard.increaseScore();
         scoreBoard.increaseScore();
 
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            Thread.currentThread().interrupt();
-        }
-
         scoreBoard.saveScore();
-
-        System.out.println(scoreBoard.getSavedScores());
-
+        
         assertEquals(2, scoreBoard.getSavedScores().size());
 
     }
