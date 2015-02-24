@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 public class GameSurface {
 
-    private ArrayList<Vector2> gameSurface;
+    private final ArrayList<Vector2> gameSurface;
 
     /**
      * Creates the surface

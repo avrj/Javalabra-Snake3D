@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFont
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import java.util.ArrayList;
-import java.util.Map;
 import org.avrj.snake3d.Snake3D;
 import org.avrj.snake3d.helpers.ScoreBoardItem;
 import org.avrj.snake3d.listeners.ScoreBoardKeyListener;
@@ -47,7 +46,7 @@ public class ScoreBoardScene extends Snake3DScene {
         titleLabel.setPosition(stage.getWidth() / 2 - (titleFont.getBounds(titleText).width / 2), stage.getHeight() - 100);
 
         int y = 0;
-        for(ScoreBoardItem scoreBoardItem : snake3d.scoreBoard().getSavedScores()) {
+        for (ScoreBoardItem scoreBoardItem : snake3d.scoreBoard().getSavedScores()) {
             String timestamp = snake3d.scoreBoard().formatTimestamp(scoreBoardItem.getTimestamp());
             Integer score = scoreBoardItem.getScore();
 
@@ -121,10 +120,9 @@ public class ScoreBoardScene extends Snake3DScene {
 
     private void showScoreLabels() {
         int i = 0;
-        for(ScoreBoardItem scoreBoardItem : snake3d.scoreBoard().getSavedScores()) {
+        for (ScoreBoardItem scoreBoardItem : snake3d.scoreBoard().getSavedScores()) {
             String timestamp = snake3d.scoreBoard().formatTimestamp(scoreBoardItem.getTimestamp());
             Integer score = scoreBoardItem.getScore();
-
 
             stringBuilder.setLength(0);
             stringBuilder.append(timestamp).append(" ").append(score).append(" points");

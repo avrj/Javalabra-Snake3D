@@ -26,11 +26,11 @@ public class Snake3D extends Game {
     private InputProcessor currentInputProcessor;
 
     public GameLoopScene gameLoopScene;
-    
+
     @Override
     public void create() {
         inputMultiplexer = new InputMultiplexer();
-        
+
         scoreBoard = new ScoreBoard();
 
         gameState = GameState.Paused;

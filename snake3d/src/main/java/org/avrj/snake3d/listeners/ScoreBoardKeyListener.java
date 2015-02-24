@@ -3,8 +3,6 @@ package org.avrj.snake3d.listeners;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import org.avrj.snake3d.Snake3D;
-import org.avrj.snake3d.helpers.GameState;
-import org.avrj.snake3d.helpers.SnakeDirection;
 import org.avrj.snake3d.scenes.MainMenuScene;
 
 /**

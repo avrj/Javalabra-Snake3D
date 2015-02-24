@@ -130,6 +130,9 @@ public class ScoreBoardTest {
 
     @Test
     public void getSavedScoresIfFileExists() {
+        scoresFilePath.delete();
+        scoresDirectoryPath.delete();
+        
         scoresDirectoryPath.mkdir();
 
         try {
@@ -163,7 +166,7 @@ public class ScoreBoardTest {
 
         scoreBoard.increaseScore();
         scoreBoard.increaseScore();
-        
+
         try {
             Thread.sleep(1000);
         } catch (InterruptedException ex) {
@@ -177,7 +180,7 @@ public class ScoreBoardTest {
         assertEquals(2, scoreBoard.getSavedScores().size());
 
     }
-    
+
     @Test
     public void unixTimestampIsFormattedCorrectly() {
         assertEquals(scoreBoard.formatTimestamp(1424425550L), "20.02. 11:45:50");

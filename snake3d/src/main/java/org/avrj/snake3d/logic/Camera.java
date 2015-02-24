@@ -7,24 +7,14 @@ package org.avrj.snake3d.logic;
  */
 public class Camera {
 
-    private boolean isTurning = false;
-    private float targetAngle = 0;
-    private float defaultAngle = -90;
-    private float angle = defaultAngle;
-    private float angleStep = 5;
-    private boolean shouldRotate = false;
-
-    public Camera() {
-
-    }
+    private final float defaultAngle = -90;
+    private float currentAngle = defaultAngle;
 
     public float getAngle() {
-        return angle;
+        return currentAngle;
     }
 
-    public void setAngle(float angle) {
-        this.angle = angle;
-        
-        shouldRotate = true;
+    public void addDegrees(float angle) {
+        this.currentAngle += angle;
     }
 }

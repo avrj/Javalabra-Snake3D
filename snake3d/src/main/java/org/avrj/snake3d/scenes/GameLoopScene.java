@@ -55,7 +55,7 @@ public class GameLoopScene extends Snake3DScene {
     private final DirectionalShadowLight shadowLight;
 
     private float timer = 0f;
-    private float snakeSpeed = 0.5f;
+    private float snakeSpeed = 0.45f;
 
     private boolean isDone = false;
 

@@ -1,10 +1,8 @@
 package org.avrj.snake3d.logic;
 
-import com.sun.xml.internal.ws.util.StringUtils;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -12,14 +10,7 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.NavigableMap;
 import java.util.TimeZone;
-import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.avrj.snake3d.helpers.ScoreBoardItem;
 
 /**
@@ -31,7 +22,7 @@ public class ScoreBoard {
 
     private final String storedScoresDirectoryPath = "savedScores/";
     private final String storedScoresFilePath = "scores.txt";
-    private File file, dir;
+    private final File file, dir;
 
     private int score = 0;
 
@@ -142,10 +133,10 @@ public class ScoreBoard {
             return false;
         }
 
-        if(!clearFile(file)) {
+        if (!clearFile(file)) {
             return false;
         }
-        
+
         try (PrintWriter printWriter = new PrintWriter(new FileOutputStream(file, true))) {
             for (ScoreBoardItem scoreBoardItem : savedScores) {
                 printWriter.println(scoreBoardItem.getTimestamp() + "|" + scoreBoardItem.getScore());
@@ -153,20 +144,19 @@ public class ScoreBoard {
         } catch (IOException e) {
             return false;
         }
-        
 
         return true;
     }
 
     private boolean clearFile(File fileImport) {
         FileInputStream fileStream = null;
-        
-        try(PrintWriter writer = new PrintWriter(fileImport)) {
+
+        try (PrintWriter writer = new PrintWriter(fileImport)) {
             writer.print("");
         } catch (Exception ex) {
             return false;
         }
-        
+
         return true;
     }
 

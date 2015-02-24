@@ -14,7 +14,7 @@ import java.util.Set;
 public class Snake {
 
     private SnakeDirection currentDirection;
-    private ArrayList<Vector2> snake;
+    private final ArrayList<Vector2> snake;
     private Vector2 lastTailPosition;
 
     /**

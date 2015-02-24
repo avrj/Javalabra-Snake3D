@@ -31,13 +31,13 @@ public class MainMenuKeyListener extends InputAdapter {
     public boolean keyDown(int keyCode) {
         if (keyCode == Input.Keys.SPACE) {
             snake3d.getInputMultiplexer().removeProcessor(this);
-            
+
             snake3d.getScreen().setDone();
 
             return true;
         } else if (keyCode == Input.Keys.S) {
             snake3d.setScene(new ScoreBoardScene(snake3d), new ScoreBoardKeyListener(snake3d));
-            
+
             return true;
         } else if (keyCode == Input.Keys.SPACE) {
             snake3d.getInputMultiplexer().removeProcessor(this);
