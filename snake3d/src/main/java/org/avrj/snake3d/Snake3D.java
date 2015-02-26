@@ -49,7 +49,6 @@ public class Snake3D extends Game {
         currentScreen.render(Gdx.graphics.getDeltaTime());
 
         handleSceneChanges(currentScreen);
-
     }
 
     private void handleSceneChanges(Snake3DScene currentScreen) {

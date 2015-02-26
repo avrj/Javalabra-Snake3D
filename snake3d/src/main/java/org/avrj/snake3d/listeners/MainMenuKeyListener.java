@@ -1,5 +1,6 @@
 package org.avrj.snake3d.listeners;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import org.avrj.snake3d.Snake3D;
@@ -43,6 +44,12 @@ public class MainMenuKeyListener extends InputAdapter {
             snake3d.getInputMultiplexer().removeProcessor(this);
 
             snake3d.getScreen().setDone();
+
+            return true;
+        } else if (keyCode == Input.Keys.ESCAPE) {
+            snake3d.getInputMultiplexer().removeProcessor(this);
+
+            Gdx.app.exit();
 
             return true;
         }

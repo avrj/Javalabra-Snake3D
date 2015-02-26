@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.TimeZone;
 import org.avrj.snake3d.helpers.ScoreBoardItem;
@@ -105,25 +106,39 @@ public class ScoreBoard {
 
             }
         }
+        
+        Collections.sort(savedScores);
 
         return savedScores;
     }
 
     /**
-     * Saves the current score to a file
+     * Saves the current score to a file if the score is bigger or as big as the lowest score in the file
      *
      * @return true if score is saved
      */
     public boolean saveScore() {
         ArrayList<ScoreBoardItem> savedScores = getSavedScores();
+        
+        int lowestScore = 0;
+        
+        if(!savedScores.isEmpty())
+            savedScores.get(savedScores.size() - 1).getScore();
+        
+        if (score >= lowestScore) {
+            if (savedScores.size() == 10) {
+                savedScores.remove(savedScores.size() - 1);
+            }
 
-        if (savedScores.size() == 10) {
-            savedScores.remove(savedScores.size() - 1);
+            long currentTimestamp = System.currentTimeMillis() / 1000L;
+
+            savedScores.add(new ScoreBoardItem(currentTimestamp, score));
+        } else {
+            return false;
         }
-
-        long currentTimestamp = System.currentTimeMillis() / 1000L;
-
-        savedScores.add(0, new ScoreBoardItem(currentTimestamp, score));
+        
+        Collections.sort(savedScores);
+        
 
         if (!createDirIfNotExists(dir)) {
             return false;

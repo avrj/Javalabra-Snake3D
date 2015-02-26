@@ -27,7 +27,7 @@ public class ScoreBoardScene extends Snake3DScene {
     public ScoreBoardScene(Snake3D snake3d) {
         super(snake3d);
 
-        titleText = "Latest scores";
+        titleText = "High scores";
         returnToMainMenuText = "[ESC] to return to main menu";
 
         stage = new Stage();

@@ -26,7 +26,7 @@ public class MainMenuScene extends Snake3DScene {
         startGameText = "Press [SPACE] to start";
         titleText = "Snake3D";
         fullScreenText = "[ENTER] to enter fullscreen";
-        viewScoreBoardText = "[S] to view scoreboard";
+        viewScoreBoardText = "[S] to view high scores";
 
         stage = new Stage();
         stringBuilder = new StringBuilder();
