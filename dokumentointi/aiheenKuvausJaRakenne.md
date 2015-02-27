@@ -21,7 +21,9 @@ Peli tulee käyttämään OpenGL-rajapintaa käyttävää LibGDX-grafiikkakirjas
 **Rakennekuvaus**
 Pelin pääluokka on Snake3D. Luokan sisällä luodaan näkymä- ja kuuntelijaoliot ja luokka huolehtii myös näkymien vaihtamisesta. 
 
-Jokaiselle pelialueen objektille (omena, mato, kamera, pelikenttä) on oma luokka. Varsinainen peliluokka on GameLoopScene-näkymä, jossa em. luokkien oliot luodaan. Pistelistalle (ScoreBoard) on oma luokkansa.
+Jokaiselle pelialueen objektille (omena, mato, kamera, pelikenttä) on oma luokka. Varsinainen peliluokka on GameLoopScene-näkymä, 
+jossa em. luokkien oliot luodaan. Pistelistalle (ScoreBoard) on oma luokkansa. Pistelistaa varten on myös kolme erilaista 
+tiedostonkäsittelyluokkaa.
 
 Näkymäluokat laajentavat abstraktia Snake3DScene-luokkaa. Jokaiselle näkymälle (= *Scene-luokalle) on oma näppäimistönkuuntelijaluokka. Sen lisäksi yksi näppäimistönkuuntelija on voimassa koko ohjelman suorituksen ajan, tämän luokan avulla voidaan siirtyä ikkunoidusta tilasta koko näytön tilaan.
 
