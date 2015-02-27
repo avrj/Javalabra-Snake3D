@@ -1,8 +1,8 @@
-**Testausdokumentaatio**
+﻿**Testausdokumentaatio**
 
 Yksikkötestaus
 
-Logiikkaluokat (Snake, Apple, GameSurface, ScoreBoard) on testattu JUnitilla. Camera-luokka jätetty testaamatta, koska ei sisällä muita kuin get/set-metodeja.
+Logiikkaluokat (Snake, Apple, GameSurface, ScoreBoard) sekä fileutils-paketin luokat on testattu JUnitilla. Logiikkapaketin Camera-luokka jätetty testaamatta, koska ei sisällä muita kuin get/set-metodeja.
 
 Käyttöliittymä
 

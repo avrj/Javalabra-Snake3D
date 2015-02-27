@@ -69,7 +69,7 @@ public class ScoreBoard {
 
         ArrayList<ScoreBoardItem> savedScores = new ArrayList<>();
 
-        ScoreBoardFileReader fileReader = new ScoreBoardFileReader(storedScoresDirectoryPath + storedScoresFilePath);
+        ScoreBoardFileReader fileReader = new ScoreBoardFileReader(file.toString());
 
         for (String row : fileReader.getLines(10)) {
             String[] splittedRow = row.split("\\|");

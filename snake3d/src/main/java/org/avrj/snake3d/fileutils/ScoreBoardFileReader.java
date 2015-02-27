@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.avrj.snake3d.fileutils;
 
 import java.io.BufferedReader;
@@ -12,17 +7,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
+ * File reading class for scoreboard
  *
  * @author avrj
  */
 public class ScoreBoardFileReader {
 
-    private BufferedReader bufferedReader;
+    private BufferedReader bufferedReader = null;
 
     public ScoreBoardFileReader(String fileName) {
-        bufferedReader = null;
         File file = new File(fileName);
-        System.out.println(file.getAbsoluteFile());
+
         try {
             bufferedReader = new BufferedReader(new FileReader(fileName));
         } catch (IOException e) {
@@ -32,6 +27,10 @@ public class ScoreBoardFileReader {
 
     public ArrayList<String> getLines(int maxLines) {
         ArrayList<String> lines = new ArrayList<>();
+
+        if (bufferedReader == null) {
+            return lines;
+        }
 
         String row;
 

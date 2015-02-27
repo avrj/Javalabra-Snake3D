@@ -101,6 +101,7 @@
                 <configuration>
                     <instrumentation>
                         <includes>
+                            <include>org.avrj.snake3d.fileutils/*.class</include>
                             <include>org.avrj.snake3d.logic/*.class</include>
                         </includes>
                     </instrumentation>
@@ -113,9 +114,11 @@
                 <version>1.1.4</version>
                 <configuration>
                     <targetClasses>
+                        <param>org.avrj.snake3d.fileutils.*</param>
                         <param>org.avrj.snake3d.logic.*</param>
                     </targetClasses>
                     <targetTests>
+                        <param>org.avrj.snake3d.fileutils.*</param>
                         <param>org.avrj.snake3d.logic.*</param>
                     </targetTests>
                 </configuration>

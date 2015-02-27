@@ -40,11 +40,13 @@ public class ScoreBoardTest {
 
     @Before
     public void setUp() {
-        if(scoresFilePath.exists())
+        if (scoresFilePath.exists()) {
             scoresFilePath.delete();
-        
-        if(scoresDirectoryPath.exists())
+        }
+
+        if (scoresDirectoryPath.exists()) {
             scoresDirectoryPath.delete();
+        }
     }
 
     @After
@@ -144,6 +146,7 @@ public class ScoreBoardTest {
 
         assertTrue(scoreBoard.getSavedScores().isEmpty());
     }
+
     @Test
     public void savedScoresAreReturned() {
         scoresFilePath.delete();
@@ -164,7 +167,7 @@ public class ScoreBoardTest {
         scoreBoard.increaseScore();
 
         scoreBoard.saveScore();
-        
+
         assertEquals(2, scoreBoard.getSavedScores().size());
 
     }

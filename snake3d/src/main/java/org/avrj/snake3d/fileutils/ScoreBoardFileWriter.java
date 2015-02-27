@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.avrj.snake3d.fileutils;
 
 import java.io.File;
@@ -11,12 +6,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
+ * File writing class for scoreboard
  *
  * @author avrj
  */
 public class ScoreBoardFileWriter {
 
-    private PrintWriter printWriter;
+    private PrintWriter printWriter = null;
 
     public ScoreBoardFileWriter(File file) {
         try {
@@ -26,11 +22,27 @@ public class ScoreBoardFileWriter {
         }
     }
 
-    public void writeLine(String text) {
-        printWriter.println(text);
+    public boolean writeLine(String text) {
+        if (printWriter == null) {
+            return false;
+        }
+
+        try {
+            printWriter.println(text);
+        } catch (Exception e) {
+            return false;
+        }
+
+        return true;
     }
 
-    public void close() {
-        printWriter.close();
+    public boolean close() {
+        try {
+            printWriter.close();
+        } catch (Exception e) {
+            return false;
+        }
+
+        return true;
     }
 }
