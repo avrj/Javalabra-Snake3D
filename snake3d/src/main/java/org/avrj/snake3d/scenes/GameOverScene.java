@@ -25,7 +25,7 @@ public class GameOverScene extends Snake3DScene {
         snake3d.setGameState(GameState.Paused);
 
         stage = new Stage();
-        
+
         addLabels();
 
         snake3d.getInputMultiplexer().addProcessor(new GameOverKeyListener(snake3d));
@@ -55,10 +55,10 @@ public class GameOverScene extends Snake3DScene {
 
         finalScoreFont = generateFont(20);
         finalScoreLabel = createLabel(stage.getWidth() / 2 - (finalScoreFont.getBounds(finalScoreText).width / 2), stage.getHeight() / 2 - 70, finalScoreFont);
-        
+
         playAgainGameFont = generateFont(30);
         playAgainGameLabel = createLabel(stage.getWidth() / 2 - (playAgainGameFont.getBounds(playAgainGameText).width / 2), stage.getHeight() / 2 - 150, playAgainGameFont);
-        
+
         exitFont = generateFont(20);
         exitLabel = createLabel(stage.getWidth() / 2 - (exitFont.getBounds(exitText).width / 2), 100, exitFont);
     }

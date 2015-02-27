@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.TimeZone;
+import org.avrj.snake3d.fileutils.ScoreBoardFileReader;
+import org.avrj.snake3d.fileutils.ScoreBoardFileUtils;
+import org.avrj.snake3d.fileutils.ScoreBoardFileWriter;
 import org.avrj.snake3d.helpers.ScoreBoardItem;
 
 /**
@@ -56,75 +59,47 @@ public class ScoreBoard {
      * @return List of saved scores
      */
     public ArrayList<ScoreBoardItem> getSavedScores() {
-        BufferedReader bufferedReader = createReader(storedScoresDirectoryPath + storedScoresFilePath);
-
-        if (bufferedReader == null) {
+        if (!ScoreBoardFileUtils.createDirIfNotExists(dir)) {
             return new ArrayList<>();
         }
 
-        return createScoresList(bufferedReader);
-    }
-
-    private BufferedReader createReader(String fileName) {
-        try {
-            return new BufferedReader(new FileReader(fileName));
-        } catch (IOException e) {
-            return null;
+        if (!ScoreBoardFileUtils.createFileIfNotExists(file)) {
+            return new ArrayList<>();
         }
-    }
 
-    private ArrayList<ScoreBoardItem> createScoresList(BufferedReader br) {
         ArrayList<ScoreBoardItem> savedScores = new ArrayList<>();
 
-        try {
-            String row;
+        ScoreBoardFileReader fileReader = new ScoreBoardFileReader(storedScoresDirectoryPath + storedScoresFilePath);
 
-            try {
-                while ((row = br.readLine()) != null) {
-                    if (savedScores.size() == 10) {
-                        break;
-                    }
+        for (String row : fileReader.getLines(10)) {
+            String[] splittedRow = row.split("\\|");
 
-                    if (!row.contains("|")) {
-                        continue;
-                    }
+            long rowTimestamp = Long.parseLong(splittedRow[0]);
+            Integer rowScore = Integer.parseInt(splittedRow[1]);
 
-                    String[] splittedRow = row.split("\\|");
-
-                    long rowTimestamp = Long.parseLong(splittedRow[0]);
-                    Integer rowScore = Integer.parseInt(splittedRow[1]);
-
-                    savedScores.add(new ScoreBoardItem(rowTimestamp, rowScore));
-                }
-            } catch (IOException ex) {
-
-            }
-        } finally {
-            try {
-                br.close();
-            } catch (IOException ex) {
-
-            }
+            savedScores.add(new ScoreBoardItem(rowTimestamp, rowScore));
         }
-        
+
         Collections.sort(savedScores);
 
         return savedScores;
     }
 
     /**
-     * Saves the current score to a file if the score is bigger or as big as the lowest score in the file
+     * Saves the current score to a file if the score is bigger or as big as the
+     * lowest score in the file
      *
      * @return true if score is saved
      */
     public boolean saveScore() {
         ArrayList<ScoreBoardItem> savedScores = getSavedScores();
-        
+
         int lowestScore = 0;
-        
-        if(!savedScores.isEmpty())
+
+        if (!savedScores.isEmpty()) {
             savedScores.get(savedScores.size() - 1).getScore();
-        
+        }
+
         if (score >= lowestScore) {
             if (savedScores.size() == 10) {
                 savedScores.remove(savedScores.size() - 1);
@@ -136,65 +111,28 @@ public class ScoreBoard {
         } else {
             return false;
         }
-        
+
         Collections.sort(savedScores);
-        
 
-        if (!createDirIfNotExists(dir)) {
+        if (!ScoreBoardFileUtils.createDirIfNotExists(dir)) {
             return false;
         }
 
-        if (!createFileIfNotExists(file)) {
+        if (!ScoreBoardFileUtils.createFileIfNotExists(file)) {
             return false;
         }
 
-        if (!clearFile(file)) {
+        if (!ScoreBoardFileUtils.clearFile(file)) {
             return false;
         }
 
-        try (PrintWriter printWriter = new PrintWriter(new FileOutputStream(file, true))) {
-            for (ScoreBoardItem scoreBoardItem : savedScores) {
-                printWriter.println(scoreBoardItem.getTimestamp() + "|" + scoreBoardItem.getScore());
-            }
-        } catch (IOException e) {
-            return false;
+        ScoreBoardFileWriter fileWriter = new ScoreBoardFileWriter(file);
+
+        for (ScoreBoardItem scoreBoardItem : savedScores) {
+            fileWriter.writeLine(scoreBoardItem.getTimestamp() + "|" + scoreBoardItem.getScore());
         }
 
-        return true;
-    }
-
-    private boolean clearFile(File fileImport) {
-        FileInputStream fileStream = null;
-
-        try (PrintWriter writer = new PrintWriter(fileImport)) {
-            writer.print("");
-        } catch (Exception ex) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private boolean createDirIfNotExists(File dir) {
-        if (dir.exists()) {
-            if (!dir.isDirectory()) {
-                return false;
-            }
-        } else {
-            dir.mkdir();
-        }
-
-        return true;
-    }
-
-    private boolean createFileIfNotExists(File file) {
-        if (!file.isFile()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                return false;
-            }
-        }
+        fileWriter.close();
 
         return true;
     }

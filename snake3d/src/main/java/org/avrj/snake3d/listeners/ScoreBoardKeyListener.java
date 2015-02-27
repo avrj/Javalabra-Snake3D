@@ -32,7 +32,7 @@ public class ScoreBoardKeyListener extends InputAdapter {
     public boolean keyDown(int keyCode) {
         if (keyCode == Input.Keys.ESCAPE) {
             snake3d.getInputMultiplexer().removeProcessor(this);
-            
+
             snake3d.setScene(new MainMenuScene(snake3d), new MainMenuKeyListener(snake3d));
 
             return true;

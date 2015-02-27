@@ -39,7 +39,7 @@ public class MainMenuKeyListener extends InputAdapter {
             return true;
         } else if (keyCode == Input.Keys.S) {
             snake3d.getInputMultiplexer().removeProcessor(this);
-            
+
             snake3d.setScene(new ScoreBoardScene(snake3d), new ScoreBoardKeyListener(snake3d));
 
             return true;
@@ -53,7 +53,7 @@ public class MainMenuKeyListener extends InputAdapter {
             snake3d.getInputMultiplexer().removeProcessor(this);
 
             Gdx.app.exit();
-            
+
             return true;
         }
         return false;
