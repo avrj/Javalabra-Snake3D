@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -27,38 +26,24 @@ public class ScoreBoardScene extends Snake3DScene {
     public ScoreBoardScene(Snake3D snake3d) {
         super(snake3d);
 
-        titleText = "High scores";
-        returnToMainMenuText = "[ESC] to return to main menu";
-
         stage = new Stage();
         stringBuilder = new StringBuilder();
         scoreLabels = new ArrayList<>();
         scoreTexts = new ArrayList<>();
 
-        loadFonts();
-        createLabels();
+        addLabels();
 
         snake3d.getInputMultiplexer().addProcessor(new ScoreBoardKeyListener(snake3d));
     }
 
-    private void createLabels() {
-        titleLabel = new Label(" ", new Label.LabelStyle(titleFont, Color.WHITE));
-        titleLabel.setPosition(stage.getWidth() / 2 - (titleFont.getBounds(titleText).width / 2), stage.getHeight() - 100);
+    private void setLabelTexts() {
+        titleText = "High scores";
+        returnToMainMenuText = "[ESC] to return to main menu";
+    }
 
-        int y = 0;
-        for (ScoreBoardItem scoreBoardItem : snake3d.scoreBoard().getSavedScores()) {
-            String timestamp = snake3d.scoreBoard().formatTimestamp(scoreBoardItem.getTimestamp());
-            Integer score = scoreBoardItem.getScore();
-
-            Label scoreLabel = new Label(" ", new Label.LabelStyle(scoreFont, Color.WHITE));
-            scoreLabel.setPosition(stage.getWidth() / 2 - (scoreFont.getBounds(timestamp + " " + score + " points").width / 2), stage.getHeight() - (160 + (35 * y)));
-            scoreLabels.add(scoreLabel);
-
-            y++;
-        }
-
-        returnToMainMenuLabel = new Label(" ", new Label.LabelStyle(returnToMainMenuFont, Color.WHITE));
-        returnToMainMenuLabel.setPosition(stage.getWidth() / 2 - (returnToMainMenuFont.getBounds(returnToMainMenuText).width / 2), 100);
+    private void addLabels() {
+        setLabelTexts();
+        createLabels();
 
         stage.addActor(titleLabel);
 
@@ -67,7 +52,34 @@ public class ScoreBoardScene extends Snake3DScene {
         }
 
         stage.addActor(returnToMainMenuLabel);
+    }
 
+    private void createLabels() {
+        titleFont = generateFont(50);
+        titleLabel = createLabel(stage.getWidth() / 2 - (titleFont.getBounds(titleText).width / 2), stage.getHeight() - 100, titleFont);
+
+        scoreFont = generateFont(20);
+        int y = 0;
+        for (ScoreBoardItem scoreBoardItem : snake3d.scoreBoard().getSavedScores()) {
+            String timestamp = snake3d.scoreBoard().formatTimestamp(scoreBoardItem.getTimestamp());
+            Integer score = scoreBoardItem.getScore();
+
+            Label scoreLabel = createLabel(stage.getWidth() / 2 - (scoreFont.getBounds(timestamp + " " + score + " points").width / 2), stage.getHeight() - (160 + (35 * y)), scoreFont);
+            scoreLabels.add(scoreLabel);
+
+            y++;
+        }
+
+        returnToMainMenuFont = generateFont(20);
+        returnToMainMenuLabel = createLabel(stage.getWidth() / 2 - (returnToMainMenuFont.getBounds(returnToMainMenuText).width / 2), 100, returnToMainMenuFont);
+
+    }
+
+    private Label createLabel(float x, float y, BitmapFont titleFont) {
+        Label label = new Label(" ", new Label.LabelStyle(titleFont, Color.WHITE));
+        label.setPosition(x, y);
+
+        return label;
     }
 
     @Override
@@ -78,20 +90,11 @@ public class ScoreBoardScene extends Snake3DScene {
         stage.dispose();
     }
 
-    private void loadFonts() {
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("assets/fonts/AgentOrange.ttf"));
-        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+    private BitmapFont generateFont(int fontSize) {
+        FreeTypeFontParameter parameters = new FreeTypeFontParameter();
 
-        parameter.size = 50;
-        titleFont = generator.generateFont(parameter);
-
-        parameter.size = 20;
-        scoreFont = generator.generateFont(parameter);
-
-        parameter.size = 20;
-        returnToMainMenuFont = generator.generateFont(parameter);
-
-        generator.dispose();
+        parameters.size = fontSize;
+        return snake3d.getFontGenerator().generateFont(parameters);
     }
 
     @Override
@@ -104,40 +107,25 @@ public class ScoreBoardScene extends Snake3DScene {
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-        showTitleLabel();
-        showScoreLabels();
-        showToggleFullscreenLabel();
+        showLabels();
 
         stage.draw();
     }
 
-    private void showTitleLabel() {
-        stringBuilder.setLength(0);
-        stringBuilder.append(titleText);
+    private void showLabels() {
+        titleLabel.setText(titleText);
 
-        titleLabel.setText(stringBuilder);
-    }
-
-    private void showScoreLabels() {
         int i = 0;
         for (ScoreBoardItem scoreBoardItem : snake3d.scoreBoard().getSavedScores()) {
             String timestamp = snake3d.scoreBoard().formatTimestamp(scoreBoardItem.getTimestamp());
             Integer score = scoreBoardItem.getScore();
 
-            stringBuilder.setLength(0);
-            stringBuilder.append(timestamp).append(" ").append(score).append(" points");
-
-            scoreLabels.get(i).setText(stringBuilder);
+            scoreLabels.get(i).setText(timestamp + " " + score + " points");
 
             i++;
         }
-    }
 
-    public void showToggleFullscreenLabel() {
-        stringBuilder.setLength(0);
-        stringBuilder.append(returnToMainMenuText);
-
-        returnToMainMenuLabel.setText(stringBuilder);
+        returnToMainMenuLabel.setText(returnToMainMenuText);
     }
 
     @Override

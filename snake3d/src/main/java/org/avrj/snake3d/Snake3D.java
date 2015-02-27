@@ -4,6 +4,8 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import java.io.File;
 import org.avrj.snake3d.helpers.GameState;
 import org.avrj.snake3d.listeners.CommonKeyListener;
 import org.avrj.snake3d.listeners.GameLoopKeyListener;
@@ -22,13 +24,17 @@ public class Snake3D extends Game {
     private GameState gameState;
 
     private InputMultiplexer inputMultiplexer;
-
     private InputProcessor currentInputProcessor;
 
     public GameLoopScene gameLoopScene;
 
+    private final String fontPath = "assets/fonts/AgentOrange.ttf";
+    private FreeTypeFontGenerator fontGenerator;
+
     @Override
     public void create() {
+        checkIfFontExists(fontPath);
+
         inputMultiplexer = new InputMultiplexer();
 
         scoreBoard = new ScoreBoard();
@@ -112,7 +118,22 @@ public class Snake3D extends Game {
         return gameState;
     }
 
+    public FreeTypeFontGenerator getFontGenerator() {
+        return fontGenerator;
+    }
+
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
+    }
+
+    private void checkIfFontExists(String fontPath) {
+        try {
+            fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal(fontPath));
+        } catch (Exception e) {
+            System.out.println("Font is missing: " + fontPath);
+            System.out.println("Program can't continue. Exiting...");
+
+            Gdx.app.exit();
+        }
     }
 }

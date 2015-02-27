@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -23,37 +22,50 @@ public class MainMenuScene extends Snake3DScene {
     public MainMenuScene(Snake3D snake3d) {
         super(snake3d);
 
-        startGameText = "Press [SPACE] to start";
-        titleText = "Snake3D";
-        fullScreenText = "[ENTER] to enter fullscreen";
-        viewScoreBoardText = "[S] to view high scores";
-
         stage = new Stage();
         stringBuilder = new StringBuilder();
 
-        loadFonts();
-        createLabels();
+        addLabels();
 
         snake3d.getInputMultiplexer().addProcessor(new MainMenuKeyListener(snake3d));
     }
 
-    private void createLabels() {
-        titleLabel = new Label(" ", new Label.LabelStyle(titleFont, Color.WHITE));
-        titleLabel.setPosition(stage.getWidth() / 2 - (titleFont.getBounds(titleText).width / 2), stage.getHeight() / 2);
+    private void setLabelTexts() {
+        startGameText = "Press [SPACE] to start";
+        titleText = "Snake3D";
+        fullScreenText = "[ENTER] to enter fullscreen";
+        viewScoreBoardText = "[S] to view high scores";
+    }
 
-        startGameLabel = new Label(" ", new Label.LabelStyle(startGameFont, Color.WHITE));
-        startGameLabel.setPosition(stage.getWidth() / 2 - (startGameFont.getBounds(startGameText).width / 2), stage.getHeight() / 2 - 100);
-
-        fullScreenLabel = new Label(" ", new Label.LabelStyle(fullScreenFont, Color.WHITE));
-        fullScreenLabel.setPosition(stage.getWidth() / 2 - (fullScreenFont.getBounds(fullScreenText).width / 2), 100);
-
-        viewScoreBoardLabel = new Label(" ", new Label.LabelStyle(viewScoreBoardFont, Color.WHITE));
-        viewScoreBoardLabel.setPosition(stage.getWidth() / 2 - (viewScoreBoardFont.getBounds(viewScoreBoardText).width / 2), stage.getHeight() / 2 - 170);
+    private void addLabels() {
+        setLabelTexts();
+        createLabels();
 
         stage.addActor(titleLabel);
         stage.addActor(startGameLabel);
         stage.addActor(fullScreenLabel);
         stage.addActor(viewScoreBoardLabel);
+    }
+
+    private void createLabels() {
+        titleFont = generateFont(100);
+        titleLabel = createLabel(stage.getWidth() / 2 - (titleFont.getBounds(titleText).width / 2), stage.getHeight() / 2, titleFont);
+
+        startGameFont = generateFont(30);
+        startGameLabel = createLabel(stage.getWidth() / 2 - (startGameFont.getBounds(startGameText).width / 2), stage.getHeight() / 2 - 100, startGameFont);
+
+        fullScreenFont = generateFont(20);
+        fullScreenLabel = createLabel(stage.getWidth() / 2 - (fullScreenFont.getBounds(fullScreenText).width / 2), 100, fullScreenFont);
+
+        viewScoreBoardFont = generateFont(20);
+        viewScoreBoardLabel = createLabel(stage.getWidth() / 2 - (viewScoreBoardFont.getBounds(viewScoreBoardText).width / 2), stage.getHeight() / 2 - 170, viewScoreBoardFont);
+    }
+
+    private Label createLabel(float x, float y, BitmapFont titleFont) {
+        Label label = new Label(" ", new Label.LabelStyle(titleFont, Color.WHITE));
+        label.setPosition(x, y);
+
+        return label;
     }
 
     @Override
@@ -65,23 +77,11 @@ public class MainMenuScene extends Snake3DScene {
         stage.dispose();
     }
 
-    private void loadFonts() {
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("assets/fonts/AgentOrange.ttf"));
-        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+    private BitmapFont generateFont(int fontSize) {
+        FreeTypeFontParameter parameters = new FreeTypeFontParameter();
 
-        parameter.size = 100;
-        titleFont = generator.generateFont(parameter);
-
-        parameter.size = 30;
-        startGameFont = generator.generateFont(parameter);
-
-        parameter.size = 20;
-        fullScreenFont = generator.generateFont(parameter);
-
-        parameter.size = 20;
-        viewScoreBoardFont = generator.generateFont(parameter);
-
-        generator.dispose();
+        parameters.size = fontSize;
+        return snake3d.getFontGenerator().generateFont(parameters);
     }
 
     @Override
@@ -94,40 +94,16 @@ public class MainMenuScene extends Snake3DScene {
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-        showTitleLabel();
-        showPlayLabel();
-        showToggleFullscreenLabel();
-        showViewScoreBoardLabel();
+        setLabels();
 
         stage.draw();
     }
 
-    private void showTitleLabel() {
-        stringBuilder.setLength(0);
-        stringBuilder.append(titleText);
-
-        titleLabel.setText(stringBuilder);
-    }
-
-    private void showPlayLabel() {
-        stringBuilder.setLength(0);
-        stringBuilder.append(startGameText);
-
-        startGameLabel.setText(stringBuilder);
-    }
-
-    public void showToggleFullscreenLabel() {
-        stringBuilder.setLength(0);
-        stringBuilder.append(fullScreenText);
-
-        fullScreenLabel.setText(stringBuilder);
-    }
-
-    public void showViewScoreBoardLabel() {
-        stringBuilder.setLength(0);
-        stringBuilder.append(viewScoreBoardText);
-
-        viewScoreBoardLabel.setText(stringBuilder);
+    private void setLabels() {
+        titleLabel.setText(titleText);
+        startGameLabel.setText(startGameText);
+        fullScreenLabel.setText(fullScreenText);
+        viewScoreBoardLabel.setText(viewScoreBoardText);
     }
 
     @Override
